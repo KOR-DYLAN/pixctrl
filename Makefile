@@ -3,6 +3,7 @@ NPROC			:=$(shell nproc)
 CMAKE 			:=cmake
 TOOLCHAIN_FILE 	:=toolchain/gnu.toolchain.cmake
 BUILD_DIR		:=build
+OUTPUT_DIR		:=output
 SOURCE_DIR		:=$(TOPDIR)
 V				?=0
 
