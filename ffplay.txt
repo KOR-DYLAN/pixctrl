@@ -1,5 +1,10 @@
 ffplay -video_size 2000x1500 -pixel_format bgra test_bgra_2000x1500.raw
 
+ffplay -video_size 2000x1500 -pixel_format bgr24 rgba-to-bgr_2000x1500.raw (x)
+ffplay -video_size 2000x1500 -pixel_format rgb24 rgba-to-rgb_2000x1500.raw (x)
+ffplay -video_size 2000x1500 -pixel_format bgr24 bgra-to-bgr_2000x1500.raw (o)
+ffplay -video_size 2000x1500 -pixel_format rgb24 bgra-to-rgb_2000x1500.raw (o)
+
 # ffmpeg -pix_fmts
 ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
   built with gcc 13 (Ubuntu 13.2.0-23ubuntu3)

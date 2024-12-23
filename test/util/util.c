@@ -136,7 +136,7 @@ test_result_t save_test_image_as_rawdata(const char *rootpath, const char *prefi
     {
         pos += sprintf(pos, "%s_", prefix);
     }
-    (void)sprintf(pos, "%s_%dx%d.raw", get_format_as_string(img->fmt), img->width, img->height);
+    (void)sprintf(pos, "%dx%d.raw", img->width, img->height);
 
     result = save_data_as_file(destpath, img->buf, (size_t)img->stride * (size_t)img->height);
     return result;
