@@ -1,13 +1,3 @@
-# Set System Processor
-if(CROSS_COMPILE STREQUAL "aarch64-none-linux-gnu-" OR 
-   CROSS_COMPILE STREQUAL "aarch64-none-elf-" )
-    set(CMAKE_SYSTEM_PROCESSOR aarch64)
-elseif(NOT CROSS_COMPILE)
-    set(CMAKE_SYSTEM_PROCESSOR "x86_64")
-else()
-    message(FATAL_ERROR "invalid 'CROSS_COMPILE'...")
-endif()
-
 # Set System Name
 set(CMAKE_SYSTEM_NAME Linux)
 
