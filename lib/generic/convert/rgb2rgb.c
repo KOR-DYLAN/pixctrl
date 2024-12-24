@@ -214,6 +214,199 @@ pixctrl_result_t pixctrl_generic_abgr_to_bgr(uint8_t *src, uint8_t *dst, int32_t
 }
 
 /********************************************************************************************
+ *  xxxa to xxxa Function
+ ********************************************************************************************
+ */
+pixctrl_result_t pixctrl_generic_rgba_to_bgra(uint8_t *src, uint8_t *dst, int32_t width, int32_t height)
+{
+    const pixctrl_order_t src_order = INIT_PIXCTRL_ORDER_ABGR;
+    const pixctrl_order_t dst_order = INIT_PIXCTRL_ORDER_BGRA;
+    pixctrl_result_t result = pixctrl_check_validation_of_parameters(src, dst, width, height);
+    uint8_t *src_row_base = src, *dst_row_base = dst;
+    register int32_t src_stride = width * src_order.bpp, dst_stride = width * dst_order.bpp;
+    register int32_t row;
+
+    if (result == PIXCTRL_SUCCESS)
+    {
+        for (row = 0; row < height; ++row)
+        {
+            pixctrl_generic_argb_to_argb_line_stripe(src_row_base, &src_order, dst_row_base, &dst_order, width);
+            src_row_base += src_stride;
+            dst_row_base += dst_stride;
+        }
+    }
+
+    return result;
+}
+
+pixctrl_result_t pixctrl_generic_bgra_to_rgba(uint8_t *src, uint8_t *dst, int32_t width, int32_t height)
+{
+    const pixctrl_order_t src_order = INIT_PIXCTRL_ORDER_ABGR;
+    const pixctrl_order_t dst_order = INIT_PIXCTRL_ORDER_RGBA;
+    pixctrl_result_t result = pixctrl_check_validation_of_parameters(src, dst, width, height);
+    uint8_t *src_row_base = src, *dst_row_base = dst;
+    register int32_t src_stride = width * src_order.bpp, dst_stride = width * dst_order.bpp;
+    register int32_t row;
+
+    if (result == PIXCTRL_SUCCESS)
+    {
+        for (row = 0; row < height; ++row)
+        {
+            pixctrl_generic_argb_to_argb_line_stripe(src_row_base, &src_order, dst_row_base, &dst_order, width);
+            src_row_base += src_stride;
+            dst_row_base += dst_stride;
+        }
+    }
+
+    return result;
+}
+
+
+/********************************************************************************************
+ *  xxxa to axxx Function
+ ********************************************************************************************
+ */
+pixctrl_result_t pixctrl_generic_rgba_to_abgr(uint8_t *src, uint8_t *dst, int32_t width, int32_t height)
+{
+    const pixctrl_order_t src_order = INIT_PIXCTRL_ORDER_RGBA;
+    const pixctrl_order_t dst_order = INIT_PIXCTRL_ORDER_ABGR;
+    pixctrl_result_t result = pixctrl_check_validation_of_parameters(src, dst, width, height);
+    uint8_t *src_row_base = src, *dst_row_base = dst;
+    register int32_t src_stride = width * src_order.bpp, dst_stride = width * dst_order.bpp;
+    register int32_t row;
+
+    if (result == PIXCTRL_SUCCESS)
+    {
+        for (row = 0; row < height; ++row)
+        {
+            pixctrl_generic_argb_to_argb_line_stripe(src_row_base, &src_order, dst_row_base, &dst_order, width);
+            src_row_base += src_stride;
+            dst_row_base += dst_stride;
+        }
+    }
+
+    return result;
+}
+
+pixctrl_result_t pixctrl_generic_bgra_to_argb(uint8_t *src, uint8_t *dst, int32_t width, int32_t height)
+{
+    const pixctrl_order_t src_order = INIT_PIXCTRL_ORDER_BGRA;
+    const pixctrl_order_t dst_order = INIT_PIXCTRL_ORDER_ARGB;
+    pixctrl_result_t result = pixctrl_check_validation_of_parameters(src, dst, width, height);
+    uint8_t *src_row_base = src, *dst_row_base = dst;
+    register int32_t src_stride = width * src_order.bpp, dst_stride = width * dst_order.bpp;
+    register int32_t row;
+
+    if (result == PIXCTRL_SUCCESS)
+    {
+        for (row = 0; row < height; ++row)
+        {
+            pixctrl_generic_argb_to_argb_line_stripe(src_row_base, &src_order, dst_row_base, &dst_order, width);
+            src_row_base += src_stride;
+            dst_row_base += dst_stride;
+        }
+    }
+
+    return result;
+}
+
+/********************************************************************************************
+ *  axxx to xxxa Function
+ ********************************************************************************************
+ */
+pixctrl_result_t pixctrl_generic_argb_to_bgra(uint8_t *src, uint8_t *dst, int32_t width, int32_t height)
+{
+    const pixctrl_order_t src_order = INIT_PIXCTRL_ORDER_ARGB;
+    const pixctrl_order_t dst_order = INIT_PIXCTRL_ORDER_BGRA;
+    pixctrl_result_t result = pixctrl_check_validation_of_parameters(src, dst, width, height);
+    uint8_t *src_row_base = src, *dst_row_base = dst;
+    register int32_t src_stride = width * src_order.bpp, dst_stride = width * dst_order.bpp;
+    register int32_t row;
+
+    if (result == PIXCTRL_SUCCESS)
+    {
+        for (row = 0; row < height; ++row)
+        {
+            pixctrl_generic_argb_to_argb_line_stripe(src_row_base, &src_order, dst_row_base, &dst_order, width);
+            src_row_base += src_stride;
+            dst_row_base += dst_stride;
+        }
+    }
+
+    return result;
+}
+
+pixctrl_result_t pixctrl_generic_abgr_to_rgba(uint8_t *src, uint8_t *dst, int32_t width, int32_t height)
+{
+    const pixctrl_order_t src_order = INIT_PIXCTRL_ORDER_ABGR;
+    const pixctrl_order_t dst_order = INIT_PIXCTRL_ORDER_RGBA;
+    pixctrl_result_t result = pixctrl_check_validation_of_parameters(src, dst, width, height);
+    uint8_t *src_row_base = src, *dst_row_base = dst;
+    register int32_t src_stride = width * src_order.bpp, dst_stride = width * dst_order.bpp;
+    register int32_t row;
+
+    if (result == PIXCTRL_SUCCESS)
+    {
+        for (row = 0; row < height; ++row)
+        {
+            pixctrl_generic_argb_to_argb_line_stripe(src_row_base, &src_order, dst_row_base, &dst_order, width);
+            src_row_base += src_stride;
+            dst_row_base += dst_stride;
+        }
+    }
+
+    return result;
+}
+
+/********************************************************************************************
+ *  axxx to axxx Function
+ ********************************************************************************************
+ */
+pixctrl_result_t pixctrl_generic_argb_to_abgr(uint8_t *src, uint8_t *dst, int32_t width, int32_t height)
+{
+    const pixctrl_order_t src_order = INIT_PIXCTRL_ORDER_ARGB;
+    const pixctrl_order_t dst_order = INIT_PIXCTRL_ORDER_ABGR;
+    pixctrl_result_t result = pixctrl_check_validation_of_parameters(src, dst, width, height);
+    uint8_t *src_row_base = src, *dst_row_base = dst;
+    register int32_t src_stride = width * src_order.bpp, dst_stride = width * dst_order.bpp;
+    register int32_t row;
+
+    if (result == PIXCTRL_SUCCESS)
+    {
+        for (row = 0; row < height; ++row)
+        {
+            pixctrl_generic_argb_to_argb_line_stripe(src_row_base, &src_order, dst_row_base, &dst_order, width);
+            src_row_base += src_stride;
+            dst_row_base += dst_stride;
+        }
+    }
+
+    return result;
+}
+
+pixctrl_result_t pixctrl_generic_abgr_to_argb(uint8_t *src, uint8_t *dst, int32_t width, int32_t height)
+{
+    const pixctrl_order_t src_order = INIT_PIXCTRL_ORDER_ABGR;
+    const pixctrl_order_t dst_order = INIT_PIXCTRL_ORDER_ARGB;
+    pixctrl_result_t result = pixctrl_check_validation_of_parameters(src, dst, width, height);
+    uint8_t *src_row_base = src, *dst_row_base = dst;
+    register int32_t src_stride = width * src_order.bpp, dst_stride = width * dst_order.bpp;
+    register int32_t row;
+
+    if (result == PIXCTRL_SUCCESS)
+    {
+        for (row = 0; row < height; ++row)
+        {
+            pixctrl_generic_argb_to_argb_line_stripe(src_row_base, &src_order, dst_row_base, &dst_order, width);
+            src_row_base += src_stride;
+            dst_row_base += dst_stride;
+        }
+    }
+
+    return result;
+}
+
+/********************************************************************************************
  *  xxx to xxx Function
  ********************************************************************************************
  */

@@ -46,9 +46,13 @@ extern const char *pixctrl_get_format_as_ffmpeg_style_string(pixctrl_fmt_t fmt);
  ********************************************************************************************
  */
 /* Line-Stripe Function */
-extern void pixctrl_generic_rgb_to_rgb_line_stripe( uint8_t *src, const pixctrl_order_t *src_order,
-                                                    uint8_t *dst, const pixctrl_order_t *dst_order,
-                                                    int32_t width);
+extern void pixctrl_generic_rgb_to_rgb_line_stripe(uint8_t *src, const pixctrl_order_t *src_order,
+                                                   uint8_t *dst, const pixctrl_order_t *dst_order,
+                                                   int32_t width);
+extern void pixctrl_generic_argb_to_argb_line_stripe(uint8_t *src, const pixctrl_order_t *src_order,
+                                                     uint8_t *dst, const pixctrl_order_t *dst_order,
+                                                     int32_t width);
+
 /* xxxa to xxx Function */
 extern pixctrl_result_t pixctrl_generic_rgba_to_rgb(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
 extern pixctrl_result_t pixctrl_generic_rgba_to_bgr(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
@@ -60,6 +64,22 @@ extern pixctrl_result_t pixctrl_generic_argb_to_rgb(uint8_t *src, uint8_t *dst, 
 extern pixctrl_result_t pixctrl_generic_argb_to_bgr(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
 extern pixctrl_result_t pixctrl_generic_abgr_to_rgb(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
 extern pixctrl_result_t pixctrl_generic_abgr_to_bgr(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+
+/* xxxa to xxxa Function */
+extern pixctrl_result_t pixctrl_generic_rgba_to_bgra(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+extern pixctrl_result_t pixctrl_generic_bgra_to_rgba(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+
+/* xxxa to axxx Function */
+extern pixctrl_result_t pixctrl_generic_rgba_to_abgr(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+extern pixctrl_result_t pixctrl_generic_bgra_to_argb(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+
+/* axxx to xxxa Function */
+extern pixctrl_result_t pixctrl_generic_argb_to_bgra(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+extern pixctrl_result_t pixctrl_generic_abgr_to_rgba(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+
+/* axxx to axxx Function */
+extern pixctrl_result_t pixctrl_generic_argb_to_abgr(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+extern pixctrl_result_t pixctrl_generic_abgr_to_argb(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
 
 /* xxx to xxx Function */
 extern pixctrl_result_t pixctrl_generic_rgb_to_bgr(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);

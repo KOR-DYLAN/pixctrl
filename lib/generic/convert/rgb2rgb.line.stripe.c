@@ -48,3 +48,28 @@ void pixctrl_generic_rgb_to_rgb_line_stripe(uint8_t *src, const pixctrl_order_t 
         dst_pos += dst_bpp;
     }
 }
+
+void pixctrl_generic_argb_to_argb_line_stripe(uint8_t *src, const pixctrl_order_t *src_order,
+                                              uint8_t *dst, const pixctrl_order_t *dst_order,
+                                              int32_t width)
+{
+    register const int32_t src_ia  = src_order->ia,  dst_ia  = dst_order->ia;
+    register const int32_t src_ir  = src_order->ir,  dst_ir  = dst_order->ir;
+    register const int32_t src_ig  = src_order->ig,  dst_ig  = dst_order->ig;
+    register const int32_t src_ib  = src_order->ib,  dst_ib  = dst_order->ib;
+    register const int32_t src_bpp = src_order->bpp, dst_bpp = dst_order->bpp;
+
+    register int32_t col;
+    register uint8_t *src_pos = src;
+    register uint8_t *dst_pos = dst;
+
+    for(col = 0; col < width; ++col)
+    {
+        dst_pos[dst_ia] = src_pos[src_ia];
+        dst_pos[dst_ir] = src_pos[src_ir];
+        dst_pos[dst_ig] = src_pos[src_ig];
+        dst_pos[dst_ib] = src_pos[src_ib];
+        src_pos += src_bpp;
+        dst_pos += dst_bpp;
+    }
+}
