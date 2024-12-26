@@ -18,6 +18,7 @@ list(APPEND INC ${CAIRO_INCLUDE_DIRS})
 
 # source
 list(APPEND SRC util.c)
+list(APPEND SRC util.linux.c)
 
 # library root
 list(APPEND LIBROOT ${CAIRO_LIBRARY_DIRS})
