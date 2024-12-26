@@ -33,6 +33,7 @@ extern "C" {
 typedef enum {
     PIXCTRL_SUCCESS,
     PIXCTRL_FAILURE,
+    PIXCTRL_NOT_SUPPORT,
     PIXCTRL_MUST_NOT_BE_NULL,
     PIXCTRL_MEMORY_ALLOCATION_IS_FAILED,
     PIXCTRL_INVALID_RANGE,
@@ -40,24 +41,46 @@ typedef enum {
 } pixctrl_result_t;
 
 typedef struct {
-    int32_t bpp;
-    int32_t ir;
-    int32_t ig;
-    int32_t ib;
-    int32_t ia;
-} pixctrl_order_t;
+    int32_t bpp;    /* bytes-per-pixel */
+    int32_t ir;     /* red   index */
+    int32_t ig;     /* green index */
+    int32_t ib;     /* blue  index */
+    int32_t ia;     /* alpha index */
+} pixctrl_rgb_order_t;
+
+typedef struct {
+    int32_t bpp;    /* bytes-per-pixel */
+    int32_t iy;     /* Y index */
+    int32_t iu;     /* U index */
+    int32_t iv;     /* V index */
+    int32_t ia;     /* alpha index */
+} pixctrl_yuv_order_t;
 
 /* 
- - Init 'pixctrl_order_t' data list 
-                                   b
-                                   p  i  i  i  i
-                                   p  r  g  b  a */
-#define INIT_PIXCTRL_ORDER_RGBA  { 4, 0, 1, 2, 3, }
-#define INIT_PIXCTRL_ORDER_BGRA  { 4, 2, 1, 0, 3, }
-#define INIT_PIXCTRL_ORDER_ARGB  { 4, 1, 2, 3, 0, }
-#define INIT_PIXCTRL_ORDER_ABGR  { 4, 3, 2, 1, 0, }
-#define INIT_PIXCTRL_ORDER_RGB   { 3, 0, 1, 2, 0, }
-#define INIT_PIXCTRL_ORDER_BGR   { 3, 2, 1, 0, 0, }
+ - Init RGB 'pixctrl_order_t' data list 
+                                      b
+                                      p  i  i  i  i
+                                      p  r  g  b  a */
+#define INIT_PIXCTRL_ORDER_RGBA     { 4, 0, 1, 2, 3, }
+#define INIT_PIXCTRL_ORDER_BGRA     { 4, 2, 1, 0, 3, }
+#define INIT_PIXCTRL_ORDER_ARGB     { 4, 1, 2, 3, 0, }
+#define INIT_PIXCTRL_ORDER_ABGR     { 4, 3, 2, 1, 0, }
+#define INIT_PIXCTRL_ORDER_RGB      { 3, 0, 1, 2, 0, }
+#define INIT_PIXCTRL_ORDER_BGR      { 3, 2, 1, 0, 0, }
+
+/* 
+ - Init YUV Interleaved 'pixctrl_order_t' data list 
+                                      b
+                                      p  i  i  i  i
+                                      p  y  u  v  a */
+#define INIT_PIXCTRL_ORDER_YUV444   { 3, 0, 1, 2, 0, }
+#define INIT_PIXCTRL_ORDER_YUYV422  { 2, 0, 1, 3, 0, }
+#define INIT_PIXCTRL_ORDER_YVYU422  { 2, 2, 3, 1, 0, }
+#define INIT_PIXCTRL_ORDER_UYVY422  { 2, 1, 0, 2, 0, }
+#define INIT_PIXCTRL_ORDER_VYUY422  { 2, 1, 2, 0, 0, }
+#define INIT_PIXCTRL_ORDER_NV12     { 2, 0, 0, 1, 0, }
+#define INIT_PIXCTRL_ORDER_NV21     { 2, 0, 1, 0, 0, }
+
 
 typedef enum {
     /* ARGB32 */
@@ -73,6 +96,19 @@ typedef enum {
     /* RGB24 */
     PIXCTRL_FMT_BGR24,
     PIXCTRL_FMT_RGB24,
+    /* YUV444 */
+    PIXCTRL_FMT_YUV444,
+    PIXCTRL_FMT_YUV444P,
+    /* YUV422 */
+    PIXCTRL_FMT_YUYV422,
+    PIXCTRL_FMT_YVYU422,
+    PIXCTRL_FMT_UYVY422,
+    PIXCTRL_FMT_VYUY422,
+    PIXCTRL_FMT_YUV422P,
+    /* YUV420 */
+    PIXCTRL_FMT_NV12,
+    PIXCTRL_FMT_NV21,
+    PIXCTRL_FMT_YUV420P,
 } pixctrl_fmt_t;
 
 #ifdef  __cplusplus

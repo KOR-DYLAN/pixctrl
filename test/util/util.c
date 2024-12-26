@@ -121,7 +121,7 @@ test_result_t load_png_to_test_image(char *path, test_image_t *img)
     return result;
 }
 
-test_result_t save_test_image_as_rawdata(const char *rootpath, const char *prefix, test_image_t *img)
+test_result_t save_test_image_as_rawdata(const char *rootpath, const char *prefix, uint8_t *buf, int32_t width, int32_t height, size_t len)
 {
     test_result_t result;
     char destpath[MAX_PATH_LEN];
@@ -136,8 +136,8 @@ test_result_t save_test_image_as_rawdata(const char *rootpath, const char *prefi
     {
         pos += sprintf(pos, "%s_", prefix);
     }
-    (void)sprintf(pos, "%dx%d.raw", img->width, img->height);
+    (void)sprintf(pos, "%dx%d.raw", width, height);
 
-    result = save_data_as_file(destpath, img->buf, (size_t)img->stride * (size_t)img->height);
+    result = save_data_as_file(destpath, buf, len);
     return result;
 }

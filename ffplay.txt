@@ -1,9 +1,17 @@
-ffplay -video_size 2000x1500 -pixel_format bgra test_bgra_2000x1500.raw
+ffplay -video_size 1280x720 -pixel_format bgra test_bgra_1280x720.raw
 
-ffplay -video_size 2000x1500 -pixel_format bgr24 rgba-to-bgr_2000x1500.raw (x)
-ffplay -video_size 2000x1500 -pixel_format rgb24 rgba-to-rgb_2000x1500.raw (x)
-ffplay -video_size 2000x1500 -pixel_format bgr24 bgra-to-bgr_2000x1500.raw (o)
-ffplay -video_size 2000x1500 -pixel_format rgb24 bgra-to-rgb_2000x1500.raw (o)
+ffplay -video_size 1280x720 -pixel_format bgr24 rgba-to-bgr_1280x720.raw (x)
+ffplay -video_size 1280x720 -pixel_format rgb24 rgba-to-rgb_1280x720.raw (x)
+ffplay -video_size 1280x720 -pixel_format bgr24 bgra-to-bgr_1280x720.raw (o)
+ffplay -video_size 1280x720 -pixel_format rgb24 bgra-to-rgb_1280x720.raw (o)
+
+ffplay -video_size 1280x720 -pixel_format yuv444 bgra-to-yuv444_1280x720.raw
+ffplay -video_size 1280x720 -pixel_format yuyv422 bgra-to-yuyv422_1280x720.raw
+ffplay -video_size 1280x720 -pixel_format yvyu422 bgra-to-yvyu422_1280x720.raw
+ffplay -video_size 1280x720 -pixel_format uyvy422 bgra-to-uyvy422_1280x720.raw
+ffplay -video_size 1280x720 -pixel_format vyuy422 bgra-to-vyuy422_1280x720.raw
+ffplay -video_size 1280x720 -pixel_format nv12 bgra-to-nv12_1280x720.raw
+ffplay -video_size 1280x720 -pixel_format nv21 bgra-to-nv21_1280x720.raw
 
 # ffmpeg -pix_fmts
 ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers

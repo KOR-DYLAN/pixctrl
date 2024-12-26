@@ -26,8 +26,8 @@
 #include <stdint.h>
 #include "pixctrl.h"
 
-void pixctrl_generic_rgb_to_rgb_line_stripe(uint8_t *src, const pixctrl_order_t *src_order,
-                                            uint8_t *dst, const pixctrl_order_t *dst_order,
+void pixctrl_generic_rgb_to_rgb_line_stripe(uint8_t *src, const pixctrl_rgb_order_t *src_order,
+                                            uint8_t *dst, const pixctrl_rgb_order_t *dst_order,
                                             int32_t width)
 {
     register const int32_t src_ir  = src_order->ir,  dst_ir  = dst_order->ir;
@@ -49,8 +49,8 @@ void pixctrl_generic_rgb_to_rgb_line_stripe(uint8_t *src, const pixctrl_order_t 
     }
 }
 
-void pixctrl_generic_argb_to_argb_line_stripe(uint8_t *src, const pixctrl_order_t *src_order,
-                                              uint8_t *dst, const pixctrl_order_t *dst_order,
+void pixctrl_generic_argb_to_argb_line_stripe(uint8_t *src, const pixctrl_rgb_order_t *src_order,
+                                              uint8_t *dst, const pixctrl_rgb_order_t *dst_order,
                                               int32_t width)
 {
     register const int32_t src_ia  = src_order->ia,  dst_ia  = dst_order->ia;

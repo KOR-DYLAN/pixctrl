@@ -16,6 +16,7 @@ int32_t main(int32_t argc, char *argv[])
     if (result == TEST_RESULT_SUCCESS)
     {
         test_rgb2rgb_convert(&img);
+        test_rgb2yuv_convert(&img);
     }
     else
     {

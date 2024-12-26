@@ -35,12 +35,14 @@ build: config
 
 phony+=clean
 clean:
+	rm -f *.raw
 	rm -rf $(RESULT_DIR)
 	rm -rf $(OUTPUT_DIR)
 	rm -rf $(BUILD_DIR)
 
 phony+=run
 run: build
+	rm -f *.raw
 	./output/bin/sample
 
 .PHONY: $(phony)
