@@ -101,3 +101,53 @@ static inline pixctrl_result_t pixctrl_generic_core_yuv444_to_yuv420(const pixct
 
     return result;
 }
+
+/********************************************************************************************
+ *  Interleaved yuv444 to Interleaved yuv422
+ ********************************************************************************************
+ */
+pixctrl_result_t pixctrl_generic_yuv444_to_yuyv422(uint8_t *src, uint8_t *dst, int32_t width, int32_t height)
+{
+    return pixctrl_generic_core_yuv444_to_yuv422((const pixctrl_yuv_order_t)INIT_PIXCTRL_ORDER_YUV444,
+                                                 (const pixctrl_yuv_order_t)INIT_PIXCTRL_ORDER_YUYV422,
+                                                 src, dst, width, height);
+}
+
+pixctrl_result_t pixctrl_generic_yuv444_to_yvyu422(uint8_t *src, uint8_t *dst, int32_t width, int32_t height)
+{
+    return pixctrl_generic_core_yuv444_to_yuv422((const pixctrl_yuv_order_t)INIT_PIXCTRL_ORDER_YUV444,
+                                                 (const pixctrl_yuv_order_t)INIT_PIXCTRL_ORDER_YVYU422,
+                                                 src, dst, width, height);
+}
+
+pixctrl_result_t pixctrl_generic_yuv444_to_uyvy422(uint8_t *src, uint8_t *dst, int32_t width, int32_t height)
+{
+    return pixctrl_generic_core_yuv444_to_yuv422((const pixctrl_yuv_order_t)INIT_PIXCTRL_ORDER_YUV444,
+                                                 (const pixctrl_yuv_order_t)INIT_PIXCTRL_ORDER_UYVY422,
+                                                 src, dst, width, height);
+}
+
+pixctrl_result_t pixctrl_generic_yuv444_to_vyuy422(uint8_t *src, uint8_t *dst, int32_t width, int32_t height)
+{
+    return pixctrl_generic_core_yuv444_to_yuv422((const pixctrl_yuv_order_t)INIT_PIXCTRL_ORDER_YUV444,
+                                                 (const pixctrl_yuv_order_t)INIT_PIXCTRL_ORDER_VYUY422,
+                                                 src, dst, width, height);
+}
+
+/********************************************************************************************
+ *  Interleaved yuv444 to Interleaved yuv420
+ ********************************************************************************************
+ */
+pixctrl_result_t pixctrl_generic_yuv444_to_nv12(uint8_t *src, uint8_t *dst, int32_t width, int32_t height)
+{
+    return pixctrl_generic_core_yuv444_to_yuv420((const pixctrl_yuv_order_t)INIT_PIXCTRL_ORDER_YUV444,
+                                                 (const pixctrl_yuv_order_t)INIT_PIXCTRL_ORDER_NV12,
+                                                 src, dst, width, height);
+}
+
+pixctrl_result_t pixctrl_generic_yuv444_to_nv21(uint8_t *src, uint8_t *dst, int32_t width, int32_t height)
+{
+    return pixctrl_generic_core_yuv444_to_yuv420((const pixctrl_yuv_order_t)INIT_PIXCTRL_ORDER_YUV444,
+                                                 (const pixctrl_yuv_order_t)INIT_PIXCTRL_ORDER_NV21,
+                                                 src, dst, width, height);
+}
