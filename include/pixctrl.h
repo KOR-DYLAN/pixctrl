@@ -109,7 +109,7 @@ extern void pixctrl_generic_rgb_to_yuv422_planar_line_stripe(uint8_t *src, const
                                                              int32_t width);
 extern void pixctrl_generic_rgb_to_yuv420_planar_line_stripe(uint8_t *src, const pixctrl_rgb_order_t *src_order,
                                                              uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
-                                                             int32_t width, int32_t heigh);
+                                                             int32_t width, int32_t row);
 
 /* rgb to Interleaved yuv444 */
 extern pixctrl_result_t pixctrl_generic_rgb_to_yuv444_interleaved(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
