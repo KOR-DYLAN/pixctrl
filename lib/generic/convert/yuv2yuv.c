@@ -46,7 +46,7 @@ static inline pixctrl_result_t pixctrl_generic_core_yuv444_to_yuv422(const pixct
         {
             for (row = 0; row < height; ++row)
             {
-                pixctrl_generic_yuv444_to_yuv422_interleaved_line_stripe(src_row_base, &src_order, 
+                pixctrl_generic_yuv444_to_yuv422_line_stripe(src_row_base, &src_order, 
                                                                          dst_row_base, &dst_order, 
                                                                          width);
                 src_row_base += src_stride;
@@ -82,7 +82,7 @@ static inline pixctrl_result_t pixctrl_generic_core_yuv444_to_yuv420(const pixct
             uv_dst_row_base = y_dst_row_base + (y_stride * height);
             for (row = 0; row < height; ++row)
             {
-                pixctrl_generic_yuv444_to_yuv420_interleaved_line_stripe(src_row_base, &src_order, 
+                pixctrl_generic_yuv444_to_yuv420_line_stripe(src_row_base, &src_order, 
                                                                          y_dst_row_base, uv_dst_row_base, &dst_order, 
                                                                          width, row);
                 src_row_base += src_stride;

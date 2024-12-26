@@ -17,17 +17,17 @@ typedef struct {
 
 static const rgb2yuv_test_vector_t gsc_rgb2yuv_test_vector[] = {
     /* interleaved */
-    { "bgra-to-yuv444-interleaved",  24, pixctrl_generic_bgra_to_yuv444_interleaved,  },
-    { "bgra-to-yuyv422-interleaved", 16, pixctrl_generic_bgra_to_yuyv422_interleaved, },
-    { "bgra-to-yvyu422-interleaved", 16, pixctrl_generic_bgra_to_yvyu422_interleaved, },
-    { "bgra-to-uyvy422-interleaved", 16, pixctrl_generic_bgra_to_uyvy422_interleaved, },
-    { "bgra-to-vyuy422-interleaved", 16, pixctrl_generic_bgra_to_vyuy422_interleaved, },
-    { "bgra-to-nv12-interleaved",    12, pixctrl_generic_bgra_to_nv12_interleaved,    },
-    { "bgra-to-nv21-interleaved",    12, pixctrl_generic_bgra_to_nv21_interleaved,    },
+    { "bgra-to-yuv444-interleaved",  24, pixctrl_generic_bgra_to_yuv444,  },
+    { "bgra-to-yuyv422-interleaved", 16, pixctrl_generic_bgra_to_yuyv422, },
+    { "bgra-to-yvyu422-interleaved", 16, pixctrl_generic_bgra_to_yvyu422, },
+    { "bgra-to-uyvy422-interleaved", 16, pixctrl_generic_bgra_to_uyvy422, },
+    { "bgra-to-vyuy422-interleaved", 16, pixctrl_generic_bgra_to_vyuy422, },
+    { "bgra-to-nv12-interleaved",    12, pixctrl_generic_bgra_to_nv12,    },
+    { "bgra-to-nv21-interleaved",    12, pixctrl_generic_bgra_to_nv21,    },
     /* planar */
-    { "bgra-to-yuv444-planar",       24, pixctrl_generic_bgra_to_yuv444_planar,       },
-    { "bgra-to-yuv422-planar",       16, pixctrl_generic_bgra_to_yuv422_planar,       },
-    { "bgra-to-yuv420-planar",       12, pixctrl_generic_bgra_to_yuv420_planar,       },
+    { "bgra-to-yuv444-planar",       24, pixctrl_generic_bgra_to_yuv444p,       },
+    { "bgra-to-yuv422-planar",       16, pixctrl_generic_bgra_to_yuv422p,       },
+    { "bgra-to-yuv420-planar",       12, pixctrl_generic_bgra_to_yuv420p,       },
 };
 
 void test_rgb2yuv_convert(test_image_t *src_img)

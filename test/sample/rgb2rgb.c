@@ -16,10 +16,10 @@ typedef struct {
 } rgb2rgb_test_vector_t;
 
 static const rgb2rgb_test_vector_t gsc_rgb2rgb_test_vector[] = {
-    { "rgba-to-rgb", 24, pixctrl_generic_rgba_to_rgb, },
-    { "rgba-to-bgr", 24, pixctrl_generic_rgba_to_bgr, },
-    { "bgra-to-rgb", 24, pixctrl_generic_bgra_to_rgb, },
-    { "bgra-to-bgr", 24, pixctrl_generic_bgra_to_bgr, },
+    { "rgba-to-rgb", 24, pixctrl_generic_rgba_to_rgb24, },
+    { "rgba-to-bgr", 24, pixctrl_generic_rgba_to_bgr24, },
+    { "bgra-to-rgb", 24, pixctrl_generic_bgra_to_rgb24, },
+    { "bgra-to-bgr", 24, pixctrl_generic_bgra_to_bgr24, },
 };
 
 void test_rgb2rgb_convert(test_image_t *src_img)

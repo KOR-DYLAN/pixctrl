@@ -30,9 +30,9 @@
  *  Interleaved to Interleaved Line-Stripe Function
  ********************************************************************************************
  */
-void pixctrl_generic_yuv444_to_yuv422_interleaved_line_stripe(uint8_t *src, const pixctrl_yuv_order_t *src_order,
-                                                              uint8_t *dst, const pixctrl_yuv_order_t *dst_order,
-                                                              int32_t width)
+void pixctrl_generic_yuv444_to_yuv422_line_stripe(uint8_t *src, const pixctrl_yuv_order_t *src_order,
+                                                  uint8_t *dst, const pixctrl_yuv_order_t *dst_order,
+                                                  int32_t width)
 {
     register const int32_t s_iy = src_order->iy, d_iy = dst_order->iy;
     register const int32_t s_iu = src_order->iu, d_iu = dst_order->iu;
@@ -75,9 +75,9 @@ void pixctrl_generic_yuv444_to_yuv422_interleaved_line_stripe(uint8_t *src, cons
     }
 }
 
-void pixctrl_generic_yuv444_to_yuv420_interleaved_line_stripe(uint8_t *src, const pixctrl_yuv_order_t *src_order,
-                                                              uint8_t *y_dst, uint8_t *uv_dst, const pixctrl_yuv_order_t *uv_dst_order,
-                                                              int32_t width, int32_t row)
+void pixctrl_generic_yuv444_to_yuv420_line_stripe(uint8_t *src, const pixctrl_yuv_order_t *src_order,
+                                                  uint8_t *y_dst, uint8_t *uv_dst, const pixctrl_yuv_order_t *uv_dst_order,
+                                                  int32_t width, int32_t row)
 {
     register const int32_t s_iy = src_order->iy;
     register const int32_t s_iu = src_order->iu, d_iu = uv_dst_order->iu;
@@ -130,9 +130,9 @@ void pixctrl_generic_yuv444_to_yuv420_interleaved_line_stripe(uint8_t *src, cons
     }
 }
 
-void pixctrl_generic_yuv422_to_yuv444_interleaved_line_stripe(uint8_t *y_src, uint8_t *uv_src, const pixctrl_yuv_order_t *uv_src_order,
-                                                              uint8_t *dst, const pixctrl_yuv_order_t *dst_order,
-                                                              int32_t width)
+void pixctrl_generic_yuv422_to_yuv444_line_stripe(uint8_t *y_src, uint8_t *uv_src, const pixctrl_yuv_order_t *uv_src_order,
+                                                  uint8_t *dst, const pixctrl_yuv_order_t *dst_order,
+                                                  int32_t width)
 {
     register const int32_t s_iy = uv_src_order->iy, d_iy = dst_order->iy;
     register const int32_t s_iu = uv_src_order->iu, d_iu = dst_order->iu;
@@ -152,9 +152,9 @@ void pixctrl_generic_yuv422_to_yuv444_interleaved_line_stripe(uint8_t *y_src, ui
     }
 }
 
-void pixctrl_generic_yuv422_to_yuv420_interleaved_line_stripe(uint8_t *y_src, uint8_t *uv_src, const pixctrl_yuv_order_t *uv_src_order,
-                                                              uint8_t *y_dst, uint8_t *uv_dst, const pixctrl_yuv_order_t *uv_dst_order,
-                                                              int32_t width, int32_t row)
+void pixctrl_generic_yuv422_to_yuv420_line_stripe(uint8_t *y_src, uint8_t *uv_src, const pixctrl_yuv_order_t *uv_src_order,
+                                                  uint8_t *y_dst, uint8_t *uv_dst, const pixctrl_yuv_order_t *uv_dst_order,
+                                                  int32_t width, int32_t row)
 {
     register const int32_t s_iy = uv_src_order->iy;
     register const int32_t s_iu = uv_src_order->iu, d_iu = uv_dst_order->iu;
@@ -174,9 +174,9 @@ void pixctrl_generic_yuv422_to_yuv420_interleaved_line_stripe(uint8_t *y_src, ui
     }
 }
 
-void pixctrl_generic_yuv420_to_yuv444_interleaved_line_stripe(uint8_t *y_src, uint8_t *uv_src, const pixctrl_yuv_order_t *uv_src_order,
-                                                              uint8_t *dst, const pixctrl_yuv_order_t *dst_order,
-                                                              int32_t width, int32_t row)
+void pixctrl_generic_yuv420_to_yuv444_line_stripe(uint8_t *y_src, uint8_t *uv_src, const pixctrl_yuv_order_t *uv_src_order,
+                                                  uint8_t *dst, const pixctrl_yuv_order_t *dst_order,
+                                                  int32_t width, int32_t row)
 {
     register const int32_t s_iy = uv_src_order->iy, d_iy = dst_order->iy;
     register const int32_t s_iu = uv_src_order->iu, d_iu = dst_order->iu;
@@ -196,9 +196,9 @@ void pixctrl_generic_yuv420_to_yuv444_interleaved_line_stripe(uint8_t *y_src, ui
     }
 }
 
-void pixctrl_generic_yuv420_to_yuv422_interleaved_line_stripe(uint8_t *y_src, uint8_t *uv_src, const pixctrl_yuv_order_t *uv_src_order,
-                                                              uint8_t *dst, const pixctrl_yuv_order_t *uv_dst_order,
-                                                              int32_t width, int32_t row)
+void pixctrl_generic_yuv420_to_yuv422_line_stripe(uint8_t *y_src, uint8_t *uv_src, const pixctrl_yuv_order_t *uv_src_order,
+                                                  uint8_t *dst, const pixctrl_yuv_order_t *uv_dst_order,
+                                                  int32_t width, int32_t row)
 {
     register const int32_t                          d_iy = uv_dst_order->iy;
     register const int32_t s_iu = uv_src_order->iu, d_iu = uv_dst_order->iu;
