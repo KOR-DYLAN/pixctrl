@@ -203,49 +203,58 @@ void pixctrl_generic_yuv422_to_yuv420_line_stripe(uint8_t *src, const pixctrl_yu
 
 void pixctrl_generic_yuv420_to_yuv444_line_stripe(uint8_t *y_src, uint8_t *uv_src, const pixctrl_yuv_order_t *uv_src_order,
                                                   uint8_t *dst, const pixctrl_yuv_order_t *dst_order,
-                                                  int32_t width, int32_t row)
+                                                  int32_t width)
 {
-    register const int32_t s_iy = uv_src_order->iy, d_iy = dst_order->iy;
+    register const int32_t                          d_iy = dst_order->iy;
     register const int32_t s_iu = uv_src_order->iu, d_iu = dst_order->iu;
     register const int32_t s_iv = uv_src_order->iv, d_iv = dst_order->iv;
-    register const int32_t src_bpp = uv_src_order->bpp, uv_dst_bpp = dst_order->bpp;
+    register const int32_t src_bpp = uv_src_order->bpp, dst_bpp = dst_order->bpp;
 
     register int32_t col;
     register uint8_t *uv_src_pos = uv_src;
     register uint8_t *dst_pos = dst;
 
-    register uint32_t u_val = 0U;
-    register uint32_t v_val = 0U;
-
     for(col = 0; col < width; ++col)
     {
-
+        dst_pos[d_iy] = y_src[col];
+        dst_pos[d_iu] = uv_src_pos[s_iu];
+        dst_pos[d_iv] = uv_src_pos[s_iv];
+        if ((col % 2) != 0)
+        {
+            uv_src_pos += src_bpp;
+        }
+        dst_pos += dst_bpp;
     }
 }
 
 void pixctrl_generic_yuv420_to_yuv422_line_stripe(uint8_t *y_src, uint8_t *uv_src, const pixctrl_yuv_order_t *uv_src_order,
                                                   uint8_t *dst, const pixctrl_yuv_order_t *uv_dst_order,
-                                                  int32_t width, int32_t row)
+                                                  int32_t width)
 {
     register const int32_t                          d_iy = uv_dst_order->iy;
     register const int32_t s_iu = uv_src_order->iu, d_iu = uv_dst_order->iu;
     register const int32_t s_iv = uv_src_order->iv, d_iv = uv_dst_order->iv;
-    register const int32_t src_bpp = uv_src_order->bpp, uv_dst_bpp = uv_dst_order->bpp;
+    register const int32_t uv_src_bpp = uv_src_order->bpp, dst_bpp = uv_dst_order->bpp;
 
     register int32_t col;
     register uint8_t *uv_src_pos = uv_src;
     register uint8_t *dst_pos = dst;
-    register uint8_t *prev_dst_pos = NULL;
-
-    register uint32_t u_val = 0U;
-    register uint32_t v_val = 0U;
+    register uint8_t *even_col_dst_pos = dst;
 
     for(col = 0; col < width; ++col)
     {
+        dst_pos[d_iy] = y_src[col];
+        dst_pos += dst_bpp;
 
+        if ((col % 2) != 0)
+        {
+            even_col_dst_pos[d_iu] = uv_src_pos[s_iu];
+            even_col_dst_pos[d_iv] = uv_src_pos[s_iv];
+            even_col_dst_pos = dst_pos;
+            uv_src_pos += uv_src_bpp;
+        }
     }
 }
-
 
 /********************************************************************************************
  *  Interleaved to Planar Line-Stripe Function

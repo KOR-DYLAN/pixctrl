@@ -48,6 +48,19 @@ static const yuv2yuv_test_vector_t gsc_yuv2yuv_test_vector[] = {
     { "yuv", "yvyu422", 16,  "yuv2yuv", "nv21",     12, 1280, 720,   pixctrl_generic_yvyu422_to_nv21,     },
     { "yuv", "uyvy422", 16,  "yuv2yuv", "nv21",     12, 1280, 720,   pixctrl_generic_uyvy422_to_nv21,     },
     { "yuv", "vyuy422", 16,  "yuv2yuv", "nv21",     12, 1280, 720,   pixctrl_generic_vyuy422_to_nv21,     },
+
+    { "yuv", "nv12",   12,  "yuv2yuv", "yuv444",    24, 1280, 720,   pixctrl_generic_nv12_to_yuv444,     },
+    { "yuv", "nv21",   12,  "yuv2yuv", "yuv444",    24, 1280, 720,   pixctrl_generic_nv21_to_yuv444,     },
+
+    { "yuv", "nv12",   12,  "yuv2yuv", "yuyv422",   16, 1280, 720,   pixctrl_generic_nv12_to_yuyv422,     },
+    { "yuv", "nv12",   12,  "yuv2yuv", "yvyu422",   16, 1280, 720,   pixctrl_generic_nv12_to_yvyu422,     },
+    { "yuv", "nv12",   12,  "yuv2yuv", "uyvy422",   16, 1280, 720,   pixctrl_generic_nv12_to_uyvy422,     },
+    { "yuv", "nv12",   12,  "yuv2yuv", "vyuy422",   16, 1280, 720,   pixctrl_generic_nv12_to_vyuy422,     },
+
+    { "yuv", "nv21",   12,  "yuv2yuv", "yuyv422",   16, 1280, 720,   pixctrl_generic_nv21_to_yuyv422,     },
+    { "yuv", "nv21",   12,  "yuv2yuv", "yvyu422",   16, 1280, 720,   pixctrl_generic_nv21_to_yvyu422,     },
+    { "yuv", "nv21",   12,  "yuv2yuv", "uyvy422",   16, 1280, 720,   pixctrl_generic_nv21_to_uyvy422,     },
+    { "yuv", "nv21",   12,  "yuv2yuv", "vyuy422",   16, 1280, 720,   pixctrl_generic_nv21_to_vyuy422,     },
 };
 
 void test_yuv2yuv_convert(char *dirpath)

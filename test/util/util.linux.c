@@ -137,7 +137,7 @@ void get_timestamp(test_timestamp_t *timestamp)
 
     assert(timestamp != NULL);
 
-    (void)clock_gettime(CLOCK_MONOTONIC, &ts);
+    (void)clock_gettime(CLOCK_MONOTONIC_RAW, &ts);
     timestamp->sec = (size_t)ts.tv_sec;
     timestamp->nsec = (size_t)ts.tv_nsec;
 }
