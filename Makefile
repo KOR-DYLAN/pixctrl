@@ -42,7 +42,7 @@ clean:
 
 phony+=run
 run: build
-	rm -f *.raw
+	rm -f output/bin/result
 	./output/bin/sample
 
 .PHONY: $(phony)

@@ -25,30 +25,30 @@ typedef struct {
 } rgb2rgb_test_vector_t;
 
 static const rgb2rgb_test_vector_t gsc_rgb2rgb_test_vector[] = {
-    /* src   src      src  dst    dst         dst
-       group fmt      bpp  group  fmt         bpp width height converter */
-    { "rgb", "abgr",  32,  "rgb", "rgb24",   24, 1280, 720,   pixctrl_generic_abgr_to_rgb24,  },
-    { "rgb", "abgr",  32,  "rgb", "bgr24",   24, 1280, 720,   pixctrl_generic_abgr_to_bgr24,  },
-    { "rgb", "abgr",  32,  "rgb", "rgba",    32, 1280, 720,   pixctrl_generic_abgr_to_rgba,   },
-    { "rgb", "abgr",  32,  "rgb", "argb",    32, 1280, 720,   pixctrl_generic_abgr_to_argb,   },
+    /* src   src      src  dst        dst         dst
+       group fmt      bpp  group      fmt         bpp width height converter */
+    { "rgb", "abgr",  32,  "rgb2rgb", "rgb24",   24, 1280, 720,   pixctrl_generic_abgr_to_rgb24,  },
+    { "rgb", "abgr",  32,  "rgb2rgb", "bgr24",   24, 1280, 720,   pixctrl_generic_abgr_to_bgr24,  },
+    { "rgb", "abgr",  32,  "rgb2rgb", "rgba",    32, 1280, 720,   pixctrl_generic_abgr_to_rgba,   },
+    { "rgb", "abgr",  32,  "rgb2rgb", "argb",    32, 1280, 720,   pixctrl_generic_abgr_to_argb,   },
 
-    { "rgb", "argb",  32,  "rgb", "rgb24",   24, 1280, 720,   pixctrl_generic_argb_to_rgb24,  },
-    { "rgb", "argb",  32,  "rgb", "bgr24",   24, 1280, 720,   pixctrl_generic_argb_to_bgr24,  },
-    { "rgb", "argb",  32,  "rgb", "bgra",    32, 1280, 720,   pixctrl_generic_argb_to_bgra,   },
-    { "rgb", "argb",  32,  "rgb", "abgr",    32, 1280, 720,   pixctrl_generic_argb_to_abgr,   },
+    { "rgb", "argb",  32,  "rgb2rgb", "rgb24",   24, 1280, 720,   pixctrl_generic_argb_to_rgb24,  },
+    { "rgb", "argb",  32,  "rgb2rgb", "bgr24",   24, 1280, 720,   pixctrl_generic_argb_to_bgr24,  },
+    { "rgb", "argb",  32,  "rgb2rgb", "bgra",    32, 1280, 720,   pixctrl_generic_argb_to_bgra,   },
+    { "rgb", "argb",  32,  "rgb2rgb", "abgr",    32, 1280, 720,   pixctrl_generic_argb_to_abgr,   },
 
-    { "rgb", "bgra",  32,  "rgb", "rgb24",   24, 1280, 720,   pixctrl_generic_bgra_to_rgb24,  },
-    { "rgb", "bgra",  32,  "rgb", "bgr24",   24, 1280, 720,   pixctrl_generic_bgra_to_bgr24,  },
-    { "rgb", "bgra",  32,  "rgb", "rgba",    32, 1280, 720,   pixctrl_generic_bgra_to_rgba,   },
-    { "rgb", "bgra",  32,  "rgb", "argb",    32, 1280, 720,   pixctrl_generic_bgra_to_argb,   },
+    { "rgb", "bgra",  32,  "rgb2rgb", "rgb24",   24, 1280, 720,   pixctrl_generic_bgra_to_rgb24,  },
+    { "rgb", "bgra",  32,  "rgb2rgb", "bgr24",   24, 1280, 720,   pixctrl_generic_bgra_to_bgr24,  },
+    { "rgb", "bgra",  32,  "rgb2rgb", "rgba",    32, 1280, 720,   pixctrl_generic_bgra_to_rgba,   },
+    { "rgb", "bgra",  32,  "rgb2rgb", "argb",    32, 1280, 720,   pixctrl_generic_bgra_to_argb,   },
 
-    { "rgb", "rgba",  32,  "rgb", "rgb24",   24, 1280, 720,   pixctrl_generic_rgba_to_rgb24,  },
-    { "rgb", "rgba",  32,  "rgb", "bgr24",   24, 1280, 720,   pixctrl_generic_rgba_to_bgr24,  },
-    { "rgb", "rgba",  32,  "rgb", "bgra",    32, 1280, 720,   pixctrl_generic_rgba_to_bgra,   },
-    { "rgb", "rgba",  32,  "rgb", "abgr",    32, 1280, 720,   pixctrl_generic_rgba_to_abgr,   },
+    { "rgb", "rgba",  32,  "rgb2rgb", "rgb24",   24, 1280, 720,   pixctrl_generic_rgba_to_rgb24,  },
+    { "rgb", "rgba",  32,  "rgb2rgb", "bgr24",   24, 1280, 720,   pixctrl_generic_rgba_to_bgr24,  },
+    { "rgb", "rgba",  32,  "rgb2rgb", "bgra",    32, 1280, 720,   pixctrl_generic_rgba_to_bgra,   },
+    { "rgb", "rgba",  32,  "rgb2rgb", "abgr",    32, 1280, 720,   pixctrl_generic_rgba_to_abgr,   },
 
-    { "rgb", "rgb24", 24,  "rgb", "bgr24",   24, 1280, 720,   pixctrl_generic_rgb24_to_bgr24, },
-    { "rgb", "bgr24", 24,  "rgb", "rgb24",   24, 1280, 720,   pixctrl_generic_bgr24_to_rgb24, },
+    { "rgb", "rgb24", 24,  "rgb2rgb", "bgr24",   24, 1280, 720,   pixctrl_generic_rgb24_to_bgr24, },
+    { "rgb", "bgr24", 24,  "rgb2rgb", "rgb24",   24, 1280, 720,   pixctrl_generic_bgr24_to_rgb24, },
 };
 
 void test_rgb2rgb_convert(char *dirpath)
