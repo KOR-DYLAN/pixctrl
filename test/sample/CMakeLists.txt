@@ -12,6 +12,7 @@ list(APPEND INC ${CMAKE_CURRENT_LIST_DIR}/../util)
 list(APPEND SRC main.c)
 list(APPEND SRC rgb2rgb.c)
 list(APPEND SRC rgb2yuv.c)
+list(APPEND SRC yuv2yuv.c)
 
 # library root
 list(APPEND LIBROOT ${CMAKE_SOURCE_DIR}/output/lib/${CMAKE_SYSTEM_PROCESSOR})

@@ -15,6 +15,7 @@ int32_t main(int32_t argc, char *argv[])
     {
         test_rgb2rgb_convert(dirpath);
         test_rgb2yuv_convert(dirpath);
+        test_yuv2yuv_convert(dirpath);
     }
     else
     {
