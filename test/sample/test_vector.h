@@ -1,7 +1,7 @@
 #ifndef __TEST_VECTOR__H__
 #define __TEST_VECTOR__H__
 
-extern void test_rgb2rgb_convert(test_image_t *src_img);
-extern void test_rgb2yuv_convert(test_image_t *src_img);
+extern void test_rgb2rgb_convert(char *dirpath);
+extern void test_rgb2yuv_convert(char *dirpath);
 
 #endif  //!__TEST_VECTOR__H__

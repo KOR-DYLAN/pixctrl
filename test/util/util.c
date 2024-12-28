@@ -2,12 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include <assert.h>
 #include <cairo.h>
 #include "util.h"
-
-#define MAX_PATH_LEN    (512)
-#define MAX_FILENAME    (128)
-
 
 char *get_input_image_path(int argc, char *argv[])
 {
@@ -119,6 +116,35 @@ test_result_t load_png_to_test_image(char *path, test_image_t *img)
     }
 
     return result;
+}
+
+uint8_t *load_rawdata(char *path, size_t *rawdata_len)
+{
+    uint8_t *rawdata = NULL;
+    size_t len;
+    FILE *fp;
+
+    fp = fopen(path, "rb");
+    if (fp != NULL)
+    {
+        (void)fseek(fp, 0, SEEK_END);
+        len = (size_t)ftell(fp);
+        (void)fseek(fp, 0, SEEK_SET);
+
+        rawdata = (uint8_t *)malloc(len);
+        assert(rawdata != NULL);
+
+        (void)fread(rawdata, len, 1, fp);
+
+        (void)fclose(fp);
+
+        if (rawdata_len != NULL)
+        {
+            *rawdata_len = len;
+        }
+    }
+
+    return rawdata;
 }
 
 test_result_t save_test_image_as_rawdata(const char *rootpath, const char *prefix, uint8_t *buf, int32_t width, int32_t height, size_t len)

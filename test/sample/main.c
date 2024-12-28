@@ -9,18 +9,15 @@
 int32_t main(int32_t argc, char *argv[])
 {
     int32_t ret = 0;
-    test_result_t result;
-    test_image_t img;
+    char *dirpath = get_dirpath(argv[0]);
 
-    result = load_png_to_test_image(get_input_image_path(argc, argv), &img);
-    if (result == TEST_RESULT_SUCCESS)
+    if (dirpath != NULL)
     {
-        test_rgb2rgb_convert(&img);
-        test_rgb2yuv_convert(&img);
+        test_rgb2rgb_convert(dirpath);
+        test_rgb2yuv_convert(dirpath);
     }
     else
     {
-        fprintf(stderr, "can not load image...\n");
         ret = -1;
     }
 
