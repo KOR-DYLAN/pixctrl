@@ -210,12 +210,12 @@ extern void pixctrl_generic_yuv444_to_yuv420_line_stripe(uint8_t *src, const pix
                                                                      uint8_t *y_dst, uint8_t *uv_dst, const pixctrl_yuv_order_t *uv_dst_order,
                                                                      int32_t width, int32_t row);
 
-extern void pixctrl_generic_yuv422_to_yuv444_line_stripe(uint8_t *y_src, uint8_t *uv_src, const pixctrl_yuv_order_t *uv_src_order,
-                                                                     uint8_t *dst, const pixctrl_yuv_order_t *dst_order,
-                                                                     int32_t width);
-extern void pixctrl_generic_yuv422_to_yuv420_line_stripe(uint8_t *y_src, uint8_t *uv_src, const pixctrl_yuv_order_t *uv_src_order,
-                                                                     uint8_t *y_dst, uint8_t *uv_dst, const pixctrl_yuv_order_t *uv_dst_order,
-                                                                     int32_t width, int32_t row);
+extern void pixctrl_generic_yuv422_to_yuv444_line_stripe(uint8_t *src, const pixctrl_yuv_order_t *uv_src_order,
+                                                         uint8_t *dst, const pixctrl_yuv_order_t *dst_order,
+                                                         int32_t width);
+extern void pixctrl_generic_yuv422_to_yuv420_line_stripe(uint8_t *src, const pixctrl_yuv_order_t *uv_src_order,
+                                                         uint8_t *y_dst, uint8_t *uv_dst, const pixctrl_yuv_order_t *uv_dst_order,
+                                                         int32_t width, int32_t row);
 
 extern void pixctrl_generic_yuv420_to_yuv444_line_stripe(uint8_t *y_src, uint8_t *uv_src, const pixctrl_yuv_order_t *uv_src_order,
                                                                      uint8_t *dst, const pixctrl_yuv_order_t *dst_order,
@@ -239,7 +239,20 @@ extern pixctrl_result_t pixctrl_generic_yuv444_to_nv12(uint8_t *src, uint8_t *ds
 extern pixctrl_result_t pixctrl_generic_yuv444_to_nv21(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
 
 /* Interleaved yuv422 to Interleaved yuv444 */
+extern pixctrl_result_t pixctrl_generic_yuyv422_to_yuv444(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+extern pixctrl_result_t pixctrl_generic_yvyu422_to_yuv444(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+extern pixctrl_result_t pixctrl_generic_uyvy422_to_yuv444(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+extern pixctrl_result_t pixctrl_generic_vyuy422_to_yuv444(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+
 /* Interleaved yuv422 to Interleaved yuv420 */
+extern pixctrl_result_t pixctrl_generic_yuyv422_to_nv12(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+extern pixctrl_result_t pixctrl_generic_yvyu422_to_nv12(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+extern pixctrl_result_t pixctrl_generic_uyvy422_to_nv12(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+extern pixctrl_result_t pixctrl_generic_vyuy422_to_nv12(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+extern pixctrl_result_t pixctrl_generic_yuyv422_to_nv21(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+extern pixctrl_result_t pixctrl_generic_yvyu422_to_nv21(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+extern pixctrl_result_t pixctrl_generic_uyvy422_to_nv21(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+extern pixctrl_result_t pixctrl_generic_vyuy422_to_nv21(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
 
 /* Interleaved yuv420 to Interleaved yuv444 */
 /* Interleaved yuv420 to Interleaved yuv422 */

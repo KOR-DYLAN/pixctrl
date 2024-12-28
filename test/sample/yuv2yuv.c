@@ -31,6 +31,23 @@ static const yuv2yuv_test_vector_t gsc_yuv2yuv_test_vector[] = {
     { "yuv", "yuv444",  24,  "yuv2yuv", "yvyu422",  16, 1280, 720,   pixctrl_generic_yuv444_to_yvyu422,   },
     { "yuv", "yuv444",  24,  "yuv2yuv", "uyvy422",  16, 1280, 720,   pixctrl_generic_yuv444_to_uyvy422,   },
     { "yuv", "yuv444",  24,  "yuv2yuv", "vyuy422",  16, 1280, 720,   pixctrl_generic_yuv444_to_vyuy422,   },
+    { "yuv", "yuv444",  24,  "yuv2yuv", "nv12",     12, 1280, 720,   pixctrl_generic_yuv444_to_nv12,      },
+    { "yuv", "yuv444",  24,  "yuv2yuv", "nv21",     12, 1280, 720,   pixctrl_generic_yuv444_to_nv21,      },
+
+    { "yuv", "yuyv422", 16,  "yuv2yuv", "yuv444",   24, 1280, 720,   pixctrl_generic_yuyv422_to_yuv444,   },
+    { "yuv", "yvyu422", 16,  "yuv2yuv", "yuv444",   24, 1280, 720,   pixctrl_generic_yvyu422_to_yuv444,   },
+    { "yuv", "uyvy422", 16,  "yuv2yuv", "yuv444",   24, 1280, 720,   pixctrl_generic_uyvy422_to_yuv444,   },
+    { "yuv", "vyuy422", 16,  "yuv2yuv", "yuv444",   24, 1280, 720,   pixctrl_generic_vyuy422_to_yuv444,   },
+
+    { "yuv", "yuyv422", 16,  "yuv2yuv", "nv12",     12, 1280, 720,   pixctrl_generic_yuyv422_to_nv12,     },
+    { "yuv", "yvyu422", 16,  "yuv2yuv", "nv12",     12, 1280, 720,   pixctrl_generic_yvyu422_to_nv12,     },
+    { "yuv", "uyvy422", 16,  "yuv2yuv", "nv12",     12, 1280, 720,   pixctrl_generic_uyvy422_to_nv12,     },
+    { "yuv", "vyuy422", 16,  "yuv2yuv", "nv12",     12, 1280, 720,   pixctrl_generic_vyuy422_to_nv12,     },
+
+    { "yuv", "yuyv422", 16,  "yuv2yuv", "nv21",     12, 1280, 720,   pixctrl_generic_yuyv422_to_nv21,     },
+    { "yuv", "yvyu422", 16,  "yuv2yuv", "nv21",     12, 1280, 720,   pixctrl_generic_yvyu422_to_nv21,     },
+    { "yuv", "uyvy422", 16,  "yuv2yuv", "nv21",     12, 1280, 720,   pixctrl_generic_uyvy422_to_nv21,     },
+    { "yuv", "vyuy422", 16,  "yuv2yuv", "nv21",     12, 1280, 720,   pixctrl_generic_vyuy422_to_nv21,     },
 };
 
 void test_yuv2yuv_convert(char *dirpath)
@@ -74,6 +91,7 @@ void test_yuv2yuv_convert(char *dirpath)
         dst_filename = get_filename(result_path);
 
         printf("[%2d / %2d] %-24s to %-36s ... ", i + 1, test_vectors, src_filename, dst_filename);
+        fflush(stdout);
         free(src_filename);
         free(dst_filename);
 
@@ -87,7 +105,7 @@ void test_yuv2yuv_convert(char *dirpath)
         expected_src_len = (((size_t)gsc_yuv2yuv_test_vector[i].width * gsc_yuv2yuv_test_vector[i].src_bpp) / 8) * (size_t)gsc_yuv2yuv_test_vector[i].height;
         assert(src_len == expected_src_len);
 
-        dst_len = (((size_t)gsc_yuv2yuv_test_vector[i].width * gsc_yuv2yuv_test_vector[i].src_bpp) / 8) * (size_t)gsc_yuv2yuv_test_vector[i].height;
+        dst_len = (((size_t)gsc_yuv2yuv_test_vector[i].width * gsc_yuv2yuv_test_vector[i].dst_bpp) / 8) * (size_t)gsc_yuv2yuv_test_vector[i].height;
         dst = (uint8_t *)malloc(dst_len);
         assert(dst != NULL);
 

@@ -148,7 +148,7 @@ void test_rgb2yuv_convert(char *dirpath)
         expected_src_len = (((size_t)gsc_rgb2yuv_test_vector[i].width * gsc_rgb2yuv_test_vector[i].src_bpp) / 8) * (size_t)gsc_rgb2yuv_test_vector[i].height;
         assert(src_len == expected_src_len);
 
-        dst_len = (((size_t)gsc_rgb2yuv_test_vector[i].width * gsc_rgb2yuv_test_vector[i].src_bpp) / 8) * (size_t)gsc_rgb2yuv_test_vector[i].height;
+        dst_len = (((size_t)gsc_rgb2yuv_test_vector[i].width * gsc_rgb2yuv_test_vector[i].dst_bpp) / 8) * (size_t)gsc_rgb2yuv_test_vector[i].height;
         dst = (uint8_t *)malloc(dst_len);
         assert(dst != NULL);
 
