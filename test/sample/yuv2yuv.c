@@ -61,6 +61,10 @@ static const yuv2yuv_test_vector_t gsc_yuv2yuv_test_vector[] = {
     { "yuv", "nv21",   12,  "yuv2yuv", "yvyu422",   16, 1280, 720,   pixctrl_generic_nv21_to_yvyu422,     },
     { "yuv", "nv21",   12,  "yuv2yuv", "uyvy422",   16, 1280, 720,   pixctrl_generic_nv21_to_uyvy422,     },
     { "yuv", "nv21",   12,  "yuv2yuv", "vyuy422",   16, 1280, 720,   pixctrl_generic_nv21_to_vyuy422,     },
+
+    { "yuv", "yuv444", 24,  "yuv2yuv", "yuv444p",   24, 1280, 720,   pixctrl_generic_yuv444_to_yuv444p,   },
+    { "yuv", "yuv444", 24,  "yuv2yuv", "yuv422p",   16, 1280, 720,   pixctrl_generic_yuv444_to_yuv422p,   },
+    { "yuv", "yuv444", 24,  "yuv2yuv", "yuv420p",   12, 1280, 720,   pixctrl_generic_yuv444_to_yuv420p,   },
 };
 
 void test_yuv2yuv_convert(char *dirpath)

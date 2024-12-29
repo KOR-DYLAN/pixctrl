@@ -225,6 +225,17 @@ extern void pixctrl_generic_yuv420_to_yuv422_line_stripe(uint8_t *y_src, uint8_t
                                                          int32_t width);
 
 /* Interleaved to Planar Line-Stripe Function */
+extern void pixctrl_generic_yuv444_to_yuv444p_line_stripe(uint8_t *src, const pixctrl_yuv_order_t *src_order,
+                                                          uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
+                                                          int32_t width);
+extern void pixctrl_generic_yuv444_to_yuv422p_line_stripe(uint8_t *src, const pixctrl_yuv_order_t *src_order,
+                                                          uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
+                                                          int32_t width);
+
+extern void pixctrl_generic_yuv444_to_yuv420p_line_stripe(uint8_t *src, const pixctrl_yuv_order_t *src_order,
+                                                          uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
+                                                          int32_t width, int32_t row);
+
 /* Planar to Interleaved Line-Stripe Function */
 /* Planar to Planar Line-Stripe Function */
 
@@ -267,6 +278,11 @@ extern pixctrl_result_t pixctrl_generic_nv21_to_yuyv422(uint8_t *src, uint8_t *d
 extern pixctrl_result_t pixctrl_generic_nv21_to_yvyu422(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
 extern pixctrl_result_t pixctrl_generic_nv21_to_uyvy422(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
 extern pixctrl_result_t pixctrl_generic_nv21_to_vyuy422(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+
+/* Interleaved yuv444 to Planar */
+extern pixctrl_result_t pixctrl_generic_yuv444_to_yuv444p(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+extern pixctrl_result_t pixctrl_generic_yuv444_to_yuv422p(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+extern pixctrl_result_t pixctrl_generic_yuv444_to_yuv420p(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
 
 /********************************************************************************************
  *  YUV to RGB Converter

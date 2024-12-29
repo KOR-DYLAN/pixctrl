@@ -260,11 +260,162 @@ void pixctrl_generic_yuv420_to_yuv422_line_stripe(uint8_t *y_src, uint8_t *uv_sr
  *  Interleaved to Planar Line-Stripe Function
  ********************************************************************************************
  */
+/* from yuv444 */
+void pixctrl_generic_yuv444_to_yuv444p_line_stripe(uint8_t *src, const pixctrl_yuv_order_t *src_order,
+                                                   uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
+                                                   int32_t width)
+{
+    register const int32_t s_iy = src_order->iy;
+    register const int32_t s_iu = src_order->iu;
+    register const int32_t s_iv = src_order->iv;
+    register const int32_t src_bpp = src_order->bpp;
+
+    register int32_t col;
+    register uint8_t *src_pos = src;
+
+    for(col = 0; col < width; ++col)
+    {
+        y_dst[col] = src_pos[s_iy];
+        u_dst[col] = src_pos[s_iu];
+        v_dst[col] = src_pos[s_iv];
+        src_pos += src_bpp;
+    }
+}
+
+void pixctrl_generic_yuv444_to_yuv422p_line_stripe(uint8_t *src, const pixctrl_yuv_order_t *src_order,
+                                                   uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
+                                                   int32_t width)
+{
+    register const int32_t s_iy = src_order->iy;
+    register const int32_t s_iu = src_order->iu;
+    register const int32_t s_iv = src_order->iv;
+    register const int32_t src_bpp = src_order->bpp;
+
+    register int32_t col, uv_col;
+    register uint8_t *src_pos = src;
+
+    register uint32_t u_val = 0;
+    register uint32_t v_val = 0;
+
+    for(col = 0; col < width; ++col)
+    {
+        y_dst[col]  = src_pos[s_iy];
+        u_val      += src_pos[s_iu];
+        v_val      += src_pos[s_iv];
+        if ((col % 2) != 0)
+        {
+            uv_col = col >> 1;  /* == (col / 2) */
+            u_val = u_val >> 1; /* == (u_val / 2) */
+            v_val = v_val >> 1; /* == (v_val / 2) */
+
+            u_dst[uv_col] = (uint8_t)u_val;
+            v_dst[uv_col] = (uint8_t)v_val;
+
+            u_val = 0U;
+            v_val = 0U;
+        }
+        src_pos += src_bpp;
+    }
+}
+
+void pixctrl_generic_yuv444_to_yuv420p_line_stripe(uint8_t *src, const pixctrl_yuv_order_t *src_order,
+                                                   uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
+                                                   int32_t width, int32_t row)
+{
+    register const int32_t s_iy = src_order->iy;
+    register const int32_t s_iu = src_order->iu;
+    register const int32_t s_iv = src_order->iv;
+    register const int32_t src_bpp = src_order->bpp;
+
+    register int32_t col, uv_col;
+    register uint8_t *src_pos = src;
+
+    register uint32_t u_val = 0;
+    register uint32_t v_val = 0;
+
+    for(col = 0; col < width; ++col)
+    {
+        y_dst[col]  = src_pos[s_iy];
+        u_val      += src_pos[s_iu];
+        v_val      += src_pos[s_iv];
+        if ((col % 2) != 0)
+        {
+            uv_col = col >> 1;  /* == (col / 2) */
+            u_val = u_val >> 1; /* == (u_val / 2) */
+            v_val = v_val >> 1; /* == (v_val / 2) */
+
+            if ((row % 2) != 0U)
+            {
+                u_val = (u_val + (uint32_t)u_dst[uv_col]) >> 1;
+                v_val = (v_val + (uint32_t)v_dst[uv_col]) >> 1;
+            }
+
+            u_dst[uv_col] = (uint8_t)u_val;
+            v_dst[uv_col] = (uint8_t)v_val;
+
+            u_val = 0U;
+            v_val = 0U;
+        }
+        src_pos += src_bpp;
+    }
+}
+
+/* from yuv422 */
+void pixctrl_generic_yuv422_to_yuv444p_line_stripe(uint8_t *src, const pixctrl_yuv_order_t *src_order,
+                                                   uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
+                                                   int32_t width)
+{
+
+}
+
+void pixctrl_generic_yuv422_to_yuv422p_line_stripe(uint8_t *src, const pixctrl_yuv_order_t *src_order,
+                                                   uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
+                                                   int32_t width)
+{
+
+}
+
+void pixctrl_generic_yuv422_to_yuv420p_line_stripe(uint8_t *src, const pixctrl_yuv_order_t *src_order,
+                                                   uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
+                                                   int32_t width, int32_t row)
+{
+
+}
+
+/* from yuv420 */
+void pixctrl_generic_yuv420_to_yuv444p_line_stripe(uint8_t *src, const pixctrl_yuv_order_t *src_order,
+                                                   uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
+                                                   int32_t width)
+{
+
+}
+
+void pixctrl_generic_yuv420_to_yuv422p_line_stripe(uint8_t *src, const pixctrl_yuv_order_t *src_order,
+                                                   uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
+                                                   int32_t width)
+{
+
+}
+
+void pixctrl_generic_yuv420_to_yuv420p_line_stripe(uint8_t *src, const pixctrl_yuv_order_t *src_order,
+                                                   uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
+                                                   int32_t width, int32_t row)
+{
+
+}
+
 /********************************************************************************************
  *  Planar to Interleaved Line-Stripe Function
  ********************************************************************************************
  */
+/* from yuv444p */
+/* from yuv422p */
+/* from yuv420p */
+
 /********************************************************************************************
  *  Planar to Planar Line-Stripe Function
  ********************************************************************************************
  */
+/* from yuv444p */
+/* from yuv422p */
+/* from yuv420p */
