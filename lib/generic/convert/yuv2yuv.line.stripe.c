@@ -365,21 +365,96 @@ void pixctrl_generic_yuv422_to_yuv444p_line_stripe(uint8_t *src, const pixctrl_y
                                                    uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
                                                    int32_t width)
 {
+    register const int32_t s_iy = src_order->iy;
+    register const int32_t s_iu = src_order->iu;
+    register const int32_t s_iv = src_order->iv;
+    register const int32_t src_bpp = src_order->bpp;
 
+    register int32_t col;
+    register uint8_t *src_pos = src;
+    register uint8_t *even_col_src_pos = src;
+
+    for(col = 0; col < width; ++col)
+    {
+        y_dst[col] = src_pos[s_iy];
+        u_dst[col] = even_col_src_pos[s_iu];
+        v_dst[col] = even_col_src_pos[s_iv];
+
+        src_pos += src_bpp;
+        if ((col % 2) != 0)
+        {
+            even_col_src_pos = src_pos;
+        }
+    }
 }
 
 void pixctrl_generic_yuv422_to_yuv422p_line_stripe(uint8_t *src, const pixctrl_yuv_order_t *src_order,
                                                    uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
                                                    int32_t width)
 {
+    register const int32_t s_iy = src_order->iy;
+    register const int32_t s_iu = src_order->iu;
+    register const int32_t s_iv = src_order->iv;
+    register const int32_t src_bpp = src_order->bpp;
 
+    register int32_t col, uv_col = 0;
+    register uint8_t *src_pos = src;
+    register uint8_t *even_col_src_pos = src;
+
+    for(col = 0; col < width; ++col)
+    {
+        y_dst[col] = src_pos[s_iy];
+
+        src_pos += src_bpp;
+        if ((col % 2) != 0)
+        {
+            uv_col = col >> 1;  /* == (col / 2) */
+            u_dst[uv_col] = even_col_src_pos[s_iu];
+            v_dst[uv_col] = even_col_src_pos[s_iv];
+            even_col_src_pos = src_pos;
+        }
+    }
 }
 
 void pixctrl_generic_yuv422_to_yuv420p_line_stripe(uint8_t *src, const pixctrl_yuv_order_t *src_order,
                                                    uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
                                                    int32_t width, int32_t row)
 {
+    register const int32_t s_iy = src_order->iy;
+    register const int32_t s_iu = src_order->iu;
+    register const int32_t s_iv = src_order->iv;
+    register const int32_t src_bpp = src_order->bpp;
 
+    register int32_t col, uv_col = 0;
+    register uint8_t *src_pos = src;
+    register uint8_t *even_col_src_pos = src;
+
+    register uint32_t u_val = 0;
+    register uint32_t v_val = 0;
+
+    for(col = 0; col < width; ++col)
+    {
+        y_dst[col] = src_pos[s_iy];
+
+        src_pos += src_bpp;
+        if ((col % 2) != 0)
+        {
+            uv_col = col >> 1;  /* == (col / 2) */
+            if ((row % 2) == 0)
+            {
+                u_dst[uv_col] = even_col_src_pos[s_iu];
+                v_dst[uv_col] = even_col_src_pos[s_iv];
+            }
+            else
+            {
+                u_val = ((uint32_t)u_dst[uv_col] + (uint32_t)even_col_src_pos[s_iu]) >> 1;
+                v_val = ((uint32_t)v_dst[uv_col] + (uint32_t)even_col_src_pos[s_iv]) >> 1;
+                u_dst[uv_col] = (uint8_t)u_val;
+                v_dst[uv_col] = (uint8_t)v_val;
+            }
+            even_col_src_pos = src_pos;
+        }
+    }
 }
 
 /* from yuv420 */

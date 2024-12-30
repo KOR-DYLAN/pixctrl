@@ -82,8 +82,9 @@ void test_rgb2rgb_convert(char *dirpath)
                                      gsc_rgb2rgb_test_vector[i].src_fmt,
                                      width,
                                      height);
-        (void)sprintf(result_path, "%s/result/%s/cvt_%s-%dx%d_from_%s.raw", 
+        (void)sprintf(result_path, "%s/result/%s/%02d_cvt_%s-%dx%d_from_%s.raw", 
                                     dirpath, gsc_rgb2rgb_test_vector[i].dst_group,
+                                    i + 1,
                                     gsc_rgb2rgb_test_vector[i].dst_fmt,
                                     width,
                                     height,
@@ -91,7 +92,7 @@ void test_rgb2rgb_convert(char *dirpath)
         src_filename = get_filename(resource_path);
         dst_filename = get_filename(result_path);
 
-        printf("[%2d / %2d] %-24s to %-36s ... ", i + 1, test_vectors, src_filename, dst_filename);
+        printf("[%2d / %2d] %-24s to %-40s ... ", i + 1, test_vectors, src_filename, dst_filename);
         free(src_filename);
         free(dst_filename);
 
