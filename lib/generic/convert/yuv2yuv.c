@@ -658,6 +658,123 @@ static inline pixctrl_result_t pixctrl_generic_core_yuv420_to_yuv420p(const pixc
     return result;
 }
 
+static inline pixctrl_result_t pixctrl_generic_core_yuv444p_to_yuv444(const pixctrl_yuv_order_t dst_order,
+                                                                      uint8_t *src, uint8_t *dst, 
+                                                                      int32_t width, int32_t height)
+{
+    pixctrl_result_t result = pixctrl_check_validation_of_parameters(src, dst, width, height);
+    uint8_t *y_src_row_base = NULL;
+    uint8_t *u_src_row_base = NULL;
+    uint8_t *v_src_row_base = NULL;
+    uint8_t *dst_row_base = dst;
+    register int32_t src_stride = width;
+    register int32_t dst_stride = width * dst_order.bpp;
+    register int32_t row;
+
+    if (result == PIXCTRL_SUCCESS)
+    {
+        y_src_row_base = src;
+        u_src_row_base = y_src_row_base + (src_stride * height);
+        v_src_row_base = u_src_row_base + (src_stride * height);
+
+        for (row = 0; row < height; ++row)
+        {
+            pixctrl_generic_yuv444p_to_yuv444_line_stripe(y_src_row_base, u_src_row_base, v_src_row_base,
+                                                          dst_row_base, &dst_order,
+                                                          width);
+
+            y_src_row_base += src_stride;
+            u_src_row_base += src_stride;
+            v_src_row_base += src_stride;
+            
+            dst_row_base += dst_stride;
+        }
+    }
+
+    return result;
+}
+
+static inline pixctrl_result_t pixctrl_generic_core_yuv444p_to_yuv422(const pixctrl_yuv_order_t dst_order,
+                                                                      uint8_t *src, uint8_t *dst, 
+                                                                      int32_t width, int32_t height)
+{
+    pixctrl_result_t result = pixctrl_check_validation_of_parameters(src, dst, width, height);
+    uint8_t *y_src_row_base = NULL;
+    uint8_t *u_src_row_base = NULL;
+    uint8_t *v_src_row_base = NULL;
+    uint8_t *dst_row_base = dst;
+    register int32_t src_stride = width;
+    register int32_t dst_stride = width * dst_order.bpp;
+    register int32_t row;
+
+    if (result == PIXCTRL_SUCCESS)
+    {
+        y_src_row_base = src;
+        u_src_row_base = y_src_row_base + (src_stride * height);
+        v_src_row_base = u_src_row_base + (src_stride * height);
+
+        for (row = 0; row < height; ++row)
+        {
+            pixctrl_generic_yuv444p_to_yuv422_line_stripe(y_src_row_base, u_src_row_base, v_src_row_base,
+                                                          dst_row_base, &dst_order,
+                                                          width);
+
+            y_src_row_base += src_stride;
+            u_src_row_base += src_stride;
+            v_src_row_base += src_stride;
+            
+            dst_row_base += dst_stride;
+        }
+    }
+
+    return result;
+}
+
+static inline pixctrl_result_t pixctrl_generic_core_yuv444p_to_yuv420(const pixctrl_yuv_order_t dst_order,
+                                                                      uint8_t *src, uint8_t *dst, 
+                                                                      int32_t width, int32_t height)
+{
+    pixctrl_result_t result = pixctrl_check_validation_of_parameters(src, dst, width, height);
+    uint8_t *y_src_row_base = NULL;
+    uint8_t *u_src_row_base = NULL;
+    uint8_t *v_src_row_base = NULL;
+    uint8_t *y_dst_row_base = NULL;
+    uint8_t *uv_dst_row_base = NULL;
+    register int32_t src_stride = width;
+    register int32_t y_dst_stride = width;
+    register int32_t uv_dst_stride = width * (dst_order.bpp / 2);
+    register int32_t row;
+
+    if (result == PIXCTRL_SUCCESS)
+    {
+        y_src_row_base = src;
+        u_src_row_base = y_src_row_base + (src_stride * height);
+        v_src_row_base = u_src_row_base + (src_stride * height);
+
+        y_dst_row_base = dst;
+        uv_dst_row_base = y_dst_row_base + (y_dst_stride * height);
+
+        for (row = 0; row < height; ++row)
+        {
+            pixctrl_generic_yuv444p_to_yuv420_line_stripe(y_src_row_base, u_src_row_base, v_src_row_base,
+                                                          y_dst_row_base, uv_dst_row_base, &dst_order,
+                                                          width, row);
+
+            y_src_row_base += src_stride;
+            u_src_row_base += src_stride;
+            v_src_row_base += src_stride;
+            
+            y_dst_row_base += y_dst_stride;
+            if ((row % 2) != 0)
+            {
+                uv_dst_row_base += uv_dst_stride;
+            }
+        }
+    }
+
+    return result;
+}
+
 /********************************************************************************************
  *  Interleaved yuv444 to Interleaved yuv422
  ********************************************************************************************
@@ -1013,5 +1130,51 @@ pixctrl_result_t pixctrl_generic_nv12_to_yuv420p(uint8_t *src, uint8_t *dst, int
 pixctrl_result_t pixctrl_generic_nv21_to_yuv420p(uint8_t *src, uint8_t *dst, int32_t width, int32_t height)
 {
     return pixctrl_generic_core_yuv420_to_yuv420p((const pixctrl_yuv_order_t)INIT_PIXCTRL_ORDER_NV21,
+                                                  src, dst, width, height);
+}
+
+/********************************************************************************************
+ *  Planar yuv444 to Interleaved
+ ********************************************************************************************
+ */
+pixctrl_result_t pixctrl_generic_yuv444p_to_yuv444(uint8_t *src, uint8_t *dst, int32_t width, int32_t height)
+{
+    return pixctrl_generic_core_yuv444p_to_yuv444((const pixctrl_yuv_order_t)INIT_PIXCTRL_ORDER_YUV444,
+                                                  src, dst, width, height);
+}
+
+pixctrl_result_t pixctrl_generic_yuv444p_to_yuyv422(uint8_t *src, uint8_t *dst, int32_t width, int32_t height)
+{
+    return pixctrl_generic_core_yuv444p_to_yuv422((const pixctrl_yuv_order_t)INIT_PIXCTRL_ORDER_YUYV422,
+                                                  src, dst, width, height);
+}
+
+pixctrl_result_t pixctrl_generic_yuv444p_to_yvyu422(uint8_t *src, uint8_t *dst, int32_t width, int32_t height)
+{
+    return pixctrl_generic_core_yuv444p_to_yuv422((const pixctrl_yuv_order_t)INIT_PIXCTRL_ORDER_YVYU422,
+                                                  src, dst, width, height);
+}
+
+pixctrl_result_t pixctrl_generic_yuv444p_to_uyvy422(uint8_t *src, uint8_t *dst, int32_t width, int32_t height)
+{
+    return pixctrl_generic_core_yuv444p_to_yuv422((const pixctrl_yuv_order_t)INIT_PIXCTRL_ORDER_UYVY422,
+                                                  src, dst, width, height);
+}
+
+pixctrl_result_t pixctrl_generic_yuv444p_to_vyuy422(uint8_t *src, uint8_t *dst, int32_t width, int32_t height)
+{
+    return pixctrl_generic_core_yuv444p_to_yuv422((const pixctrl_yuv_order_t)INIT_PIXCTRL_ORDER_VYUY422,
+                                                  src, dst, width, height);
+}
+
+pixctrl_result_t pixctrl_generic_yuv444p_to_nv12(uint8_t *src, uint8_t *dst, int32_t width, int32_t height)
+{
+    return pixctrl_generic_core_yuv444p_to_yuv420((const pixctrl_yuv_order_t)INIT_PIXCTRL_ORDER_NV12,
+                                                  src, dst, width, height);
+}
+
+pixctrl_result_t pixctrl_generic_yuv444p_to_nv21(uint8_t *src, uint8_t *dst, int32_t width, int32_t height)
+{
+    return pixctrl_generic_core_yuv444p_to_yuv420((const pixctrl_yuv_order_t)INIT_PIXCTRL_ORDER_NV21,
                                                   src, dst, width, height);
 }
