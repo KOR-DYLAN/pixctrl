@@ -458,25 +458,79 @@ void pixctrl_generic_yuv422_to_yuv420p_line_stripe(uint8_t *src, const pixctrl_y
 }
 
 /* from yuv420 */
-void pixctrl_generic_yuv420_to_yuv444p_line_stripe(uint8_t *src, const pixctrl_yuv_order_t *src_order,
+void pixctrl_generic_yuv420_to_yuv444p_line_stripe(uint8_t *y_src, uint8_t *uv_src, const pixctrl_yuv_order_t *uv_src_order,
                                                    uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
                                                    int32_t width)
 {
+    register const int32_t s_iu = uv_src_order->iu;
+    register const int32_t s_iv = uv_src_order->iv;
+    register const int32_t src_bpp = uv_src_order->bpp;
 
+    register int32_t col;
+    register uint8_t *uv_src_pos = uv_src;
+
+    for(col = 0; col < width; ++col)
+    {
+        y_dst[col] = y_src[col];
+        u_dst[col] = uv_src_pos[s_iu];
+        v_dst[col] = uv_src_pos[s_iv];
+
+        if ((col % 2) != 0)
+        {
+            uv_src_pos += src_bpp;
+        }
+    }
 }
 
-void pixctrl_generic_yuv420_to_yuv422p_line_stripe(uint8_t *src, const pixctrl_yuv_order_t *src_order,
+void pixctrl_generic_yuv420_to_yuv422p_line_stripe(uint8_t *y_src, uint8_t *uv_src, const pixctrl_yuv_order_t *uv_src_order,
                                                    uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
                                                    int32_t width)
 {
+    register const int32_t s_iu = uv_src_order->iu;
+    register const int32_t s_iv = uv_src_order->iv;
+    register const int32_t src_bpp = uv_src_order->bpp;
 
+    register int32_t col, uv_col;
+    register uint8_t *even_col_uv_src_pos = uv_src;
+
+    for(col = 0; col < width; ++col)
+    {
+        y_dst[col] = y_src[col];
+        if ((col % 2) != 0)
+        {
+            uv_col = col >> 1;  /* == (col / 2) */
+            u_dst[uv_col] = even_col_uv_src_pos[s_iu];
+            v_dst[uv_col] = even_col_uv_src_pos[s_iv];
+            even_col_uv_src_pos += src_bpp;
+        }
+    }
 }
 
-void pixctrl_generic_yuv420_to_yuv420p_line_stripe(uint8_t *src, const pixctrl_yuv_order_t *src_order,
+void pixctrl_generic_yuv420_to_yuv420p_line_stripe(uint8_t *y_src, uint8_t *uv_src, const pixctrl_yuv_order_t *uv_src_order,
                                                    uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
                                                    int32_t width, int32_t row)
 {
+    register const int32_t s_iu = uv_src_order->iu;
+    register const int32_t s_iv = uv_src_order->iv;
+    register const int32_t src_bpp = uv_src_order->bpp;
 
+    register int32_t col, uv_col;
+    register uint8_t *even_col_uv_src_pos = uv_src;
+
+    for(col = 0; col < width; ++col)
+    {
+        y_dst[col] = y_src[col];
+        if ((col % 2) != 0)
+        {
+            if ((row % 2) == 0)
+            {
+                uv_col = col >> 1;  /* == (col / 2) */
+                u_dst[uv_col] = even_col_uv_src_pos[s_iu];
+                v_dst[uv_col] = even_col_uv_src_pos[s_iv];
+            }
+            even_col_uv_src_pos += src_bpp;
+        }
+    }
 }
 
 /********************************************************************************************
