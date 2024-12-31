@@ -266,6 +266,16 @@ extern void pixctrl_generic_yuv444p_to_yuv420_line_stripe(uint8_t *y_src, uint8_
                                                           uint8_t *y_dst, uint8_t *uv_dst, const pixctrl_yuv_order_t *uv_dst_order,
                                                           int32_t width, int32_t row);
 
+extern void pixctrl_generic_yuv422p_to_yuv444_line_stripe(uint8_t *y_src, uint8_t *u_src, uint8_t *v_src,
+                                                          uint8_t *dst, const pixctrl_yuv_order_t *dst_order,
+                                                          int32_t width);
+extern void pixctrl_generic_yuv422p_to_yuv422_line_stripe(uint8_t *y_src, uint8_t *u_src, uint8_t *v_src,
+                                                          uint8_t *dst, const pixctrl_yuv_order_t *dst_order,
+                                                          int32_t width);
+extern void pixctrl_generic_yuv422p_to_yuv420_line_stripe(uint8_t *y_src, uint8_t *u_src, uint8_t *v_src,
+                                                          uint8_t *y_dst, uint8_t *uv_dst, const pixctrl_yuv_order_t *uv_dst_order,
+                                                          int32_t width, int32_t row);
+
 /* Planar to Planar Line-Stripe Function */
 
 /* Interleaved yuv444 to Interleaved yuv422 */
@@ -345,6 +355,14 @@ extern pixctrl_result_t pixctrl_generic_yuv444p_to_nv12(uint8_t *src, uint8_t *d
 extern pixctrl_result_t pixctrl_generic_yuv444p_to_nv21(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
 
 /* Planar yuv422 to Interleaved */
+extern pixctrl_result_t pixctrl_generic_yuv422p_to_yuv444(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+extern pixctrl_result_t pixctrl_generic_yuv422p_to_yuyv422(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+extern pixctrl_result_t pixctrl_generic_yuv422p_to_yvyu422(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+extern pixctrl_result_t pixctrl_generic_yuv422p_to_uyvy422(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+extern pixctrl_result_t pixctrl_generic_yuv422p_to_vyuy422(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+extern pixctrl_result_t pixctrl_generic_yuv422p_to_nv12(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+extern pixctrl_result_t pixctrl_generic_yuv422p_to_nv21(uint8_t *src, uint8_t *dst, int32_t width, int32_t height);
+
 /* Planar yuv420 to Interleaved */
 
 /********************************************************************************************
