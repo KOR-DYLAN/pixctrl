@@ -40,38 +40,41 @@ void pixctrl_generic_yuv444_to_yuv422_line_stripe(uint8_t *src, const pixctrl_yu
     register const int32_t src_bpp = src_order->bpp, dst_bpp = dst_order->bpp;
 
     register int32_t col;
-    register uint8_t *src_pos = src;
-    register uint8_t *dst_pos = dst;
-    register uint8_t *prev_dst_pos = NULL;
+    register uint8_t *src_pos = NULL;
+    register uint8_t *dst_pos = NULL;
 
     register uint32_t u_val = 0U;
     register uint32_t v_val = 0U;
 
-    for(col = 0; col < width; ++col)
+    /* convert 'Y' */
+    src_pos = src;
+    dst_pos = dst;
+    for (col = 0; col < width; ++col)
     {
-        /* Move YUV value */
         dst_pos[d_iy] = src_pos[s_iy];
+        src_pos += src_bpp;
+        dst_pos += dst_bpp;
+    }
+
+    /* convert 'CbCr' */
+    src_pos = src;
+    dst_pos = dst;
+    for (col = 0; col < width; col += 2)
+    {
+        u_val = src_pos[s_iu];
+        v_val = src_pos[s_iv];
+        src_pos += src_bpp;
+
         u_val += src_pos[s_iu];
         v_val += src_pos[s_iv];
-
-        if ((col % 2) != 0)
-        {
-            /* Average Each U, V Value */
-            u_val = u_val >> 1; /* == (u_val / 2) */
-            v_val = v_val >> 1; /* == (v_val / 2) */
-
-            /* Set Each U, V Value */
-            prev_dst_pos[d_iu] = (uint8_t)u_val;
-            prev_dst_pos[d_iv] = (uint8_t)v_val;
-
-            /* Clear Each Temp U, V Value */
-            u_val = 0U;
-            v_val = 0U;
-        }
-
         src_pos += src_bpp;
-        prev_dst_pos = dst_pos;
-        dst_pos += dst_bpp;
+
+        u_val = u_val >> 1; /* == (u_val / 2) */
+        v_val = v_val >> 1; /* == (v_val / 2) */
+
+        dst_pos[d_iu] = (uint8_t)u_val;
+        dst_pos[d_iv] = (uint8_t)v_val;
+        dst_pos += (dst_bpp * 2);
     }
 }
 
@@ -85,48 +88,48 @@ void pixctrl_generic_yuv444_to_yuv420_line_stripe(uint8_t *src, const pixctrl_yu
     register const int32_t src_bpp = src_order->bpp, uv_dst_bpp = uv_dst_order->bpp;
 
     register int32_t col;
-    register uint8_t *src_pos = src;
-    register uint8_t *uv_dst_pos = uv_dst;
+    register uint8_t *src_pos = NULL;
+    register uint8_t *uv_dst_pos = NULL;
 
     register uint32_t u_val = 0U;
     register uint32_t v_val = 0U;
 
+    /* convert 'Y' */
+    src_pos = src;
     for(col = 0; col < width; ++col)
     {
-        /* Move YUV value */
         y_dst[col] = src_pos[s_iy];
+        src_pos += src_bpp;
+    }
+
+    /* convert 'CbCr' */
+    src_pos = src;
+    uv_dst_pos = uv_dst;
+    for(col = 0; col < width; col += 2)
+    {
+        u_val = src_pos[s_iu];
+        v_val = src_pos[s_iv];
+        src_pos += src_bpp;
+
         u_val += src_pos[s_iu];
         v_val += src_pos[s_iv];
+        src_pos += src_bpp;
 
-        if ((col % 2) != 0)
+        u_val = u_val >> 1; /* == (u_val / 2) */
+        v_val = v_val >> 1; /* == (v_val / 2) */
+
+        if ((row % 2) != 0)
         {
-            /* Average Each U, V Value */
+            u_val += (uint32_t)uv_dst_pos[d_iu];
+            v_val += (uint32_t)uv_dst_pos[d_iv];
+
             u_val = u_val >> 1; /* == (u_val / 2) */
             v_val = v_val >> 1; /* == (v_val / 2) */
-
-            if ((row % 2) == 0)
-            {
-                /* Set Each U, V Value */
-                uv_dst_pos[d_iu] = (uint8_t)u_val;
-                uv_dst_pos[d_iv] = (uint8_t)v_val;
-            }
-            else
-            {
-                /* Set Final Each U, V Value */
-                u_val = (u_val + (uint32_t)uv_dst_pos[d_iu]) >> 1;
-                v_val = (v_val + (uint32_t)uv_dst_pos[d_iv]) >> 1;
-                uv_dst_pos[d_iu] = (uint8_t)u_val;
-                uv_dst_pos[d_iv] = (uint8_t)v_val;
-            }
-
-            /* Clear Each Temp U, V Value */
-            u_val = 0U;
-            v_val = 0U;
-
-            uv_dst_pos += uv_dst_bpp;
         }
 
-        src_pos += src_bpp;
+        uv_dst_pos[d_iu] = (uint8_t)u_val;
+        uv_dst_pos[d_iv] = (uint8_t)v_val;
+        uv_dst_pos += uv_dst_bpp;
     }
 }
 
@@ -140,22 +143,33 @@ void pixctrl_generic_yuv422_to_yuv444_line_stripe(uint8_t *src, const pixctrl_yu
     register const int32_t src_bpp = uv_src_order->bpp, dst_bpp = dst_order->bpp;
 
     register int32_t col;
-    register uint8_t *src_pos = src;
-    register uint8_t *even_col_src_pos = src;
-    register uint8_t *dst_pos = dst;
+    register uint8_t *src_pos = NULL;
+    register uint8_t *dst_pos = NULL;
 
+    /* convert 'Y' */
+    src_pos = src;
+    dst_pos = dst;
     for(col = 0; col < width; ++col)
     {
         dst_pos[d_iy] = src_pos[s_iy];
-        dst_pos[d_iu] = even_col_src_pos[s_iu];
-        dst_pos[d_iv] = even_col_src_pos[s_iv];
-
-        dst_pos += dst_bpp;
         src_pos += src_bpp;
-        if ((col % 2) != 0)
-        {
-            even_col_src_pos = src_pos;
-        }
+        dst_pos += dst_bpp;
+    }
+
+    /* convert 'CbCr' */
+    src_pos = src;
+    dst_pos = dst;
+    for(col = 0; col < width; col += 2)
+    {
+        dst_pos[d_iu] = src_pos[s_iu];
+        dst_pos[d_iv] = src_pos[s_iv];
+        dst_pos += dst_bpp;
+
+        dst_pos[d_iu] = src_pos[s_iu];
+        dst_pos[d_iv] = src_pos[s_iv];
+        dst_pos += dst_bpp;
+
+        src_pos += (src_bpp * 2);
     }
 }
 
@@ -169,35 +183,42 @@ void pixctrl_generic_yuv422_to_yuv420_line_stripe(uint8_t *src, const pixctrl_yu
     register const int32_t src_bpp = uv_src_order->bpp, uv_dst_bpp = uv_dst_order->bpp;
 
     register int32_t col;
-    register uint8_t *src_pos = src;
-    register uint8_t *even_col_src_pos = src;
-    register uint8_t *uv_dst_pos = uv_dst;
+    register uint8_t *src_pos = NULL;
+    register uint8_t *uv_dst_pos = NULL;
 
     register uint32_t u_val = 0U;
     register uint32_t v_val = 0U;
 
+    /* convert 'Y' */
+    src_pos = src;
     for(col = 0; col < width; ++col)
     {
         y_dst[col] = src_pos[s_iy];
-
         src_pos += src_bpp;
-        if ((col % 2) != 0)
+    }
+
+    /* convert 'CbCr' */
+    src_pos = src;
+    uv_dst_pos = uv_dst;
+    for(col = 0; col < width; col += 2)
+    {
+        u_val = src_pos[s_iu];
+        v_val = src_pos[s_iv];
+        src_pos += (src_bpp * 2);
+
+        if ((row % 2) != 0)
         {
-            if ((row % 2) == 0)
-            {
-                uv_dst_pos[d_iu] = even_col_src_pos[s_iu];
-                uv_dst_pos[d_iv] = even_col_src_pos[s_iv];
-            }
-            else
-            {
-                u_val = ((uint32_t)uv_dst_pos[d_iu] + (uint32_t)even_col_src_pos[s_iu]) >> 1;
-                v_val = ((uint32_t)uv_dst_pos[d_iv] + (uint32_t)even_col_src_pos[s_iv]) >> 1;
-                uv_dst_pos[d_iu] = (uint8_t)u_val;
-                uv_dst_pos[d_iv] = (uint8_t)v_val;
-            }
-            even_col_src_pos = src_pos;
-            uv_dst_pos += uv_dst_bpp;
+            u_val += (uint32_t)uv_dst_pos[d_iu];
+            v_val += (uint32_t)uv_dst_pos[d_iv];
+
+            u_val = u_val >> 1; /* == (u_val / 2) */
+            v_val = v_val >> 1; /* == (v_val / 2) */
         }
+
+        uv_dst_pos[d_iu] = (uint8_t)u_val;
+        uv_dst_pos[d_iv] = (uint8_t)v_val;
+
+        uv_dst_pos += uv_dst_bpp;
     }
 }
 
@@ -211,19 +232,31 @@ void pixctrl_generic_yuv420_to_yuv444_line_stripe(uint8_t *y_src, uint8_t *uv_sr
     register const int32_t src_bpp = uv_src_order->bpp, dst_bpp = dst_order->bpp;
 
     register int32_t col;
-    register uint8_t *uv_src_pos = uv_src;
-    register uint8_t *dst_pos = dst;
+    register uint8_t *uv_src_pos = NULL;
+    register uint8_t *dst_pos = NULL;
 
+    /* convert 'Y' */
+    dst_pos = dst;
     for(col = 0; col < width; ++col)
     {
         dst_pos[d_iy] = y_src[col];
+        dst_pos += dst_bpp;
+    }
+
+    /* convert 'CbCr' */
+    uv_src_pos = uv_src;
+    dst_pos = dst;
+    for(col = 0; col < width; col += 2)
+    {
         dst_pos[d_iu] = uv_src_pos[s_iu];
         dst_pos[d_iv] = uv_src_pos[s_iv];
-        if ((col % 2) != 0)
-        {
-            uv_src_pos += src_bpp;
-        }
         dst_pos += dst_bpp;
+
+        dst_pos[d_iu] = uv_src_pos[s_iu];
+        dst_pos[d_iv] = uv_src_pos[s_iv];
+        dst_pos += dst_bpp;
+
+        uv_src_pos += src_bpp;
     }
 }
 
@@ -237,22 +270,26 @@ void pixctrl_generic_yuv420_to_yuv422_line_stripe(uint8_t *y_src, uint8_t *uv_sr
     register const int32_t uv_src_bpp = uv_src_order->bpp, dst_bpp = uv_dst_order->bpp;
 
     register int32_t col;
-    register uint8_t *uv_src_pos = uv_src;
-    register uint8_t *dst_pos = dst;
-    register uint8_t *even_col_dst_pos = dst;
+    register uint8_t *uv_src_pos = NULL;
+    register uint8_t *dst_pos = NULL;
 
+    /* convert 'Y' */
+    dst_pos = dst;
     for(col = 0; col < width; ++col)
     {
         dst_pos[d_iy] = y_src[col];
         dst_pos += dst_bpp;
+    }
 
-        if ((col % 2) != 0)
-        {
-            even_col_dst_pos[d_iu] = uv_src_pos[s_iu];
-            even_col_dst_pos[d_iv] = uv_src_pos[s_iv];
-            even_col_dst_pos = dst_pos;
-            uv_src_pos += uv_src_bpp;
-        }
+    /* convert 'CbCr' */
+    uv_src_pos = uv_src;
+    dst_pos = dst;
+    for(col = 0; col < width; col += 2)
+    {
+        dst_pos[d_iu] = uv_src_pos[s_iu];
+        dst_pos[d_iv] = uv_src_pos[s_iv];
+        uv_src_pos += uv_src_bpp;
+        dst_pos += (dst_bpp * 2);
     }
 }
 
@@ -292,29 +329,37 @@ void pixctrl_generic_yuv444_to_yuv422p_line_stripe(uint8_t *src, const pixctrl_y
     register const int32_t src_bpp = src_order->bpp;
 
     register int32_t col, uv_col;
-    register uint8_t *src_pos = src;
+    register uint8_t *src_pos = NULL;
 
     register uint32_t u_val = 0;
     register uint32_t v_val = 0;
 
+    /* convert 'Y' */
+    src_pos = src;
     for(col = 0; col < width; ++col)
     {
         y_dst[col]  = src_pos[s_iy];
-        u_val      += src_pos[s_iu];
-        v_val      += src_pos[s_iv];
-        if ((col % 2) != 0)
-        {
-            uv_col = col >> 1;  /* == (col / 2) */
-            u_val = u_val >> 1; /* == (u_val / 2) */
-            v_val = v_val >> 1; /* == (v_val / 2) */
-
-            u_dst[uv_col] = (uint8_t)u_val;
-            v_dst[uv_col] = (uint8_t)v_val;
-
-            u_val = 0U;
-            v_val = 0U;
-        }
         src_pos += src_bpp;
+    }
+
+    /* convert 'CbCr' */
+    src_pos = src;
+    for(col = 0; col < width; col += 2)
+    {
+        u_val = src_pos[s_iu];
+        v_val = src_pos[s_iv];
+        src_pos += src_bpp;
+
+        u_val += src_pos[s_iu];
+        v_val += src_pos[s_iv];
+        src_pos += src_bpp;
+
+        u_val = u_val >> 1; /* == (u_val / 2) */
+        v_val = v_val >> 1; /* == (u_val / 2) */
+
+        uv_col = col / 2;
+        u_dst[uv_col] = (uint8_t)u_val;
+        v_dst[uv_col] = (uint8_t)v_val;
     }
 }
 
@@ -328,35 +373,45 @@ void pixctrl_generic_yuv444_to_yuv420p_line_stripe(uint8_t *src, const pixctrl_y
     register const int32_t src_bpp = src_order->bpp;
 
     register int32_t col, uv_col;
-    register uint8_t *src_pos = src;
+    register uint8_t *src_pos = NULL;
 
     register uint32_t u_val = 0;
     register uint32_t v_val = 0;
 
+    /* convert 'Y' */
+    src_pos = src;
     for(col = 0; col < width; ++col)
     {
         y_dst[col]  = src_pos[s_iy];
-        u_val      += src_pos[s_iu];
-        v_val      += src_pos[s_iv];
-        if ((col % 2) != 0)
+        src_pos += src_bpp;
+    }
+
+    /* convert 'CbCr' */
+    src_pos = src;
+    for(col = 0; col < width; col += 2)
+    {
+        u_val = src_pos[s_iu];
+        v_val = src_pos[s_iv];
+        src_pos += src_bpp;
+
+        u_val += src_pos[s_iu];
+        v_val += src_pos[s_iv];
+        src_pos += src_bpp;
+
+        u_val = u_val >> 1; /* == (u_val / 2) */
+        v_val = v_val >> 1; /* == (u_val / 2) */
+
+        uv_col = col / 2;
+        if ((row % 2) != 0)
         {
-            uv_col = col >> 1;  /* == (col / 2) */
+            u_val += (uint32_t)u_dst[uv_col];
+            v_val += (uint32_t)v_dst[uv_col];
+
             u_val = u_val >> 1; /* == (u_val / 2) */
             v_val = v_val >> 1; /* == (v_val / 2) */
-
-            if ((row % 2) != 0U)
-            {
-                u_val = (u_val + (uint32_t)u_dst[uv_col]) >> 1;
-                v_val = (v_val + (uint32_t)v_dst[uv_col]) >> 1;
-            }
-
-            u_dst[uv_col] = (uint8_t)u_val;
-            v_dst[uv_col] = (uint8_t)v_val;
-
-            u_val = 0U;
-            v_val = 0U;
         }
-        src_pos += src_bpp;
+        u_dst[uv_col] = (uint8_t)u_val;
+        v_dst[uv_col] = (uint8_t)v_val;
     }
 }
 
@@ -372,19 +427,26 @@ void pixctrl_generic_yuv422_to_yuv444p_line_stripe(uint8_t *src, const pixctrl_y
 
     register int32_t col;
     register uint8_t *src_pos = src;
-    register uint8_t *even_col_src_pos = src;
 
+    /* convert 'Y' */
+    src_pos = src;
     for(col = 0; col < width; ++col)
     {
-        y_dst[col] = src_pos[s_iy];
-        u_dst[col] = even_col_src_pos[s_iu];
-        v_dst[col] = even_col_src_pos[s_iv];
-
+        y_dst[col]  = src_pos[s_iy];
         src_pos += src_bpp;
-        if ((col % 2) != 0)
-        {
-            even_col_src_pos = src_pos;
-        }
+    }
+
+    /* convert 'CbCr' */
+    src_pos = src;
+    for(col = 0; col < width; col += 2)
+    {
+        u_dst[col] = src_pos[s_iu];
+        v_dst[col] = src_pos[s_iv];
+
+        u_dst[col + 1] = src_pos[s_iu];
+        v_dst[col + 1] = src_pos[s_iv];
+
+        src_pos += (src_bpp * 2);
     }
 }
 
@@ -398,21 +460,24 @@ void pixctrl_generic_yuv422_to_yuv422p_line_stripe(uint8_t *src, const pixctrl_y
     register const int32_t src_bpp = src_order->bpp;
 
     register int32_t col, uv_col = 0;
-    register uint8_t *src_pos = src;
-    register uint8_t *even_col_src_pos = src;
+    register uint8_t *src_pos = NULL;
 
+    /* convert 'Y' */
+    src_pos = src;
     for(col = 0; col < width; ++col)
     {
-        y_dst[col] = src_pos[s_iy];
-
+        y_dst[col]  = src_pos[s_iy];
         src_pos += src_bpp;
-        if ((col % 2) != 0)
-        {
-            uv_col = col >> 1;  /* == (col / 2) */
-            u_dst[uv_col] = even_col_src_pos[s_iu];
-            v_dst[uv_col] = even_col_src_pos[s_iv];
-            even_col_src_pos = src_pos;
-        }
+    }
+
+    /* convert 'CbCr' */
+    src_pos = src;
+    for(col = 0; col < width; col += 2)
+    {
+        uv_col = col / 2;
+        u_dst[uv_col] = src_pos[s_iu];
+        v_dst[uv_col] = src_pos[s_iv];
+        src_pos += (src_bpp * 2);
     }
 }
 
@@ -426,34 +491,40 @@ void pixctrl_generic_yuv422_to_yuv420p_line_stripe(uint8_t *src, const pixctrl_y
     register const int32_t src_bpp = src_order->bpp;
 
     register int32_t col, uv_col = 0;
-    register uint8_t *src_pos = src;
-    register uint8_t *even_col_src_pos = src;
+    register uint8_t *src_pos = NULL;
 
     register uint32_t u_val = 0;
     register uint32_t v_val = 0;
 
+    /* convert 'Y' */
+    src_pos = src;
     for(col = 0; col < width; ++col)
     {
-        y_dst[col] = src_pos[s_iy];
-
+        y_dst[col]  = src_pos[s_iy];
         src_pos += src_bpp;
-        if ((col % 2) != 0)
+    }
+
+    /* convert 'CbCr' */
+    src_pos = src;
+    for(col = 0; col < width; col += 2)
+    {
+        uv_col = col / 2;
+
+        u_val = src_pos[s_iu];
+        v_val = src_pos[s_iv];
+
+        if ((row % 2) != 0)
         {
-            uv_col = col >> 1;  /* == (col / 2) */
-            if ((row % 2) == 0)
-            {
-                u_dst[uv_col] = even_col_src_pos[s_iu];
-                v_dst[uv_col] = even_col_src_pos[s_iv];
-            }
-            else
-            {
-                u_val = ((uint32_t)u_dst[uv_col] + (uint32_t)even_col_src_pos[s_iu]) >> 1;
-                v_val = ((uint32_t)v_dst[uv_col] + (uint32_t)even_col_src_pos[s_iv]) >> 1;
-                u_dst[uv_col] = (uint8_t)u_val;
-                v_dst[uv_col] = (uint8_t)v_val;
-            }
-            even_col_src_pos = src_pos;
+            u_val += (uint32_t)u_dst[uv_col];
+            v_val += (uint32_t)v_dst[uv_col];
+
+            u_val = u_val >> 1; /* == (u_val / 2) */
+            v_val = v_val >> 1; /* == (v_val / 2) */
         }
+
+        u_dst[uv_col] = (uint8_t)u_val;
+        v_dst[uv_col] = (uint8_t)v_val;
+        src_pos += (src_bpp * 2);
     }
 }
 
@@ -467,18 +538,25 @@ void pixctrl_generic_yuv420_to_yuv444p_line_stripe(uint8_t *y_src, uint8_t *uv_s
     register const int32_t src_bpp = uv_src_order->bpp;
 
     register int32_t col;
-    register uint8_t *uv_src_pos = uv_src;
+    register uint8_t *uv_src_pos = NULL;
 
+    /* convert 'Y' */
     for(col = 0; col < width; ++col)
     {
         y_dst[col] = y_src[col];
+    }
+
+    /* convert 'CbCr' */
+    uv_src_pos = uv_src;
+    for(col = 0; col < width; col += 2)
+    {
         u_dst[col] = uv_src_pos[s_iu];
         v_dst[col] = uv_src_pos[s_iv];
 
-        if ((col % 2) != 0)
-        {
-            uv_src_pos += src_bpp;
-        }
+        u_dst[col + 1] = uv_src_pos[s_iu];
+        v_dst[col + 1] = uv_src_pos[s_iv];
+
+        uv_src_pos += src_bpp;
     }
 }
 
@@ -491,18 +569,22 @@ void pixctrl_generic_yuv420_to_yuv422p_line_stripe(uint8_t *y_src, uint8_t *uv_s
     register const int32_t src_bpp = uv_src_order->bpp;
 
     register int32_t col, uv_col;
-    register uint8_t *even_col_uv_src_pos = uv_src;
+    register uint8_t *uv_src_pos = NULL;
 
+    /* convert 'Y' */
     for(col = 0; col < width; ++col)
     {
         y_dst[col] = y_src[col];
-        if ((col % 2) != 0)
-        {
-            uv_col = col >> 1;  /* == (col / 2) */
-            u_dst[uv_col] = even_col_uv_src_pos[s_iu];
-            v_dst[uv_col] = even_col_uv_src_pos[s_iv];
-            even_col_uv_src_pos += src_bpp;
-        }
+    }
+
+    /* convert 'CbCr' */
+    uv_src_pos = uv_src;
+    for(col = 0; col < width; col += 2)
+    {
+        uv_col = col / 2;
+        u_dst[uv_col] = uv_src_pos[s_iu];
+        v_dst[uv_col] = uv_src_pos[s_iv];
+        uv_src_pos += src_bpp;
     }
 }
 
@@ -515,21 +597,22 @@ void pixctrl_generic_yuv420_to_yuv420p_line_stripe(uint8_t *y_src, uint8_t *uv_s
     register const int32_t src_bpp = uv_src_order->bpp;
 
     register int32_t col, uv_col;
-    register uint8_t *even_col_uv_src_pos = uv_src;
+    register uint8_t *uv_src_pos = NULL;
 
+    /* convert 'Y' */
     for(col = 0; col < width; ++col)
     {
         y_dst[col] = y_src[col];
-        if ((col % 2) != 0)
-        {
-            if ((row % 2) == 0)
-            {
-                uv_col = col >> 1;  /* == (col / 2) */
-                u_dst[uv_col] = even_col_uv_src_pos[s_iu];
-                v_dst[uv_col] = even_col_uv_src_pos[s_iv];
-            }
-            even_col_uv_src_pos += src_bpp;
-        }
+    }
+
+    /* convert 'CbCr' */
+    uv_src_pos = uv_src;
+    for(col = 0; col < width; col += 2)
+    {
+        uv_col = col / 2;
+        u_dst[uv_col] = uv_src_pos[s_iu];
+        v_dst[uv_col] = uv_src_pos[s_iv];
+        uv_src_pos += src_bpp;
     }
 }
 
@@ -570,29 +653,34 @@ void pixctrl_generic_yuv444p_to_yuv422_line_stripe(uint8_t *y_src, uint8_t *u_sr
 
     register int32_t col;
     register uint8_t *dst_pos = dst;
-    register uint8_t *even_col_uv_dst_pos = dst;
 
     register uint32_t u_val = 0;
     register uint32_t v_val = 0;
 
+    /* convert 'Y' */
+    dst_pos = dst;
     for(col = 0; col < width; ++col)
     {
         dst_pos[d_iy] = y_src[col];
-        u_val += (uint32_t)u_src[col];
-        v_val += (uint32_t)v_src[col];
-
         dst_pos += dst_bpp;
-        if ((col % 2) != 0)
-        {
-            u_val = u_val >> 1; /* == (u_val / 2) */
-            v_val = v_val >> 1; /* == (v_val / 2) */
-            even_col_uv_dst_pos[d_iu] = (uint8_t)u_val;
-            even_col_uv_dst_pos[d_iv] = (uint8_t)v_val;
-            even_col_uv_dst_pos = dst_pos;
+    }
 
-            u_val = 0U;
-            v_val = 0U;
-        }
+    /* convert 'CbCr' */
+    dst_pos = dst;
+    for(col = 0; col < width; col += 2)
+    {
+        u_val = (uint32_t)u_src[col];
+        v_val = (uint32_t)v_src[col];
+
+        u_val += (uint32_t)u_src[col + 1];
+        v_val += (uint32_t)v_src[col + 1];
+
+        u_val = u_val >> 1;
+        v_val = v_val >> 1;
+
+        dst_pos[d_iu] = (uint8_t)u_val;
+        dst_pos[d_iv] = (uint8_t)v_val;
+        dst_pos += (dst_bpp * 2);
     }
 }
 
@@ -605,36 +693,51 @@ void pixctrl_generic_yuv444p_to_yuv420_line_stripe(uint8_t *y_src, uint8_t *u_sr
     register const int32_t dst_bpp = uv_dst_order->bpp;
 
     register int32_t col;
-    register uint8_t *even_col_uv_dst_pos = uv_dst;
+    register uint8_t *uv_dst_pos = uv_dst;
 
     register uint32_t u_val = 0;
     register uint32_t v_val = 0;
 
+    /* convert 'Y' */
     for(col = 0; col < width; ++col)
     {
         y_dst[col] = y_src[col];
-        u_val += (uint32_t)u_src[col];
-        v_val += (uint32_t)v_src[col];
+    }
 
-        if ((col % 2) != 0)
+    /* convert 'CbCr' */
+    uv_dst_pos = uv_dst;
+    for(col = 0; col < width; col += 2)
+    {
+        u_val = (uint32_t)u_src[col];
+        v_val = (uint32_t)v_src[col];
+
+        u_val += (uint32_t)u_src[col + 1];
+        v_val += (uint32_t)v_src[col + 1];
+
+        u_val = u_val >> 1; /* == (u_val / 2) */
+        v_val = v_val >> 1; /* == (v_val / 2) */
+
+        u_val = (uint32_t)u_src[col];
+        v_val = (uint32_t)v_src[col];
+
+        u_val += (uint32_t)u_src[col + 1];
+        v_val += (uint32_t)v_src[col + 1];
+
+        u_val = u_val >> 1;
+        v_val = v_val >> 1;
+
+        if ((row % 2) != 0)
         {
-            u_val = u_val >> 1; /* == (u_val / 2) */
-            v_val = v_val >> 1; /* == (v_val / 2) */
+            u_val += (uint32_t)uv_dst_pos[d_iu];
+            v_val += (uint32_t)uv_dst_pos[d_iv];
 
-            if ((row % 2) != 0)
-            {
-                u_val = (u_val + (uint32_t)even_col_uv_dst_pos[d_iu]) >> 1;
-                v_val = (v_val + (uint32_t)even_col_uv_dst_pos[d_iv]) >> 1;
-            }
-
-            even_col_uv_dst_pos[d_iu] = (uint8_t)u_val;
-            even_col_uv_dst_pos[d_iv] = (uint8_t)v_val;
-
-            even_col_uv_dst_pos += dst_bpp;
-
-            u_val = 0U;
-            v_val = 0U;
+            u_val = u_val >> 1;
+            v_val = v_val >> 1;
         }
+
+        uv_dst_pos[d_iu] = (uint8_t)u_val;
+        uv_dst_pos[d_iv] = (uint8_t)v_val;
+        uv_dst_pos += dst_bpp;
     }
 }
 
@@ -672,20 +775,23 @@ void pixctrl_generic_yuv422p_to_yuv422_line_stripe(uint8_t *y_src, uint8_t *u_sr
 
     register int32_t col, uv_col;
     register uint8_t *dst_pos = dst;
-    register uint8_t *even_col_uv_dst_pos = dst;
 
+    /* convert 'Y' */
+    dst_pos = dst;
     for(col = 0; col < width; ++col)
     {
         dst_pos[d_iy] = y_src[col];
-
         dst_pos += dst_bpp;
-        if ((col % 2) != 0)
-        {
-            uv_col = col / 2;
-            even_col_uv_dst_pos[d_iu] = u_src[uv_col];
-            even_col_uv_dst_pos[d_iv] = v_src[uv_col];
-            even_col_uv_dst_pos = dst_pos;
-        }
+    }
+
+    /* convert 'CbCr' */
+    dst_pos = dst;
+    for(col = 0; col < width; col += 2)
+    {
+        uv_col = col / 2;
+        dst_pos[d_iu] = u_src[uv_col];
+        dst_pos[d_iv] = v_src[uv_col];
+        dst_pos += (dst_bpp * 2);
     }
 }
 
@@ -698,32 +804,37 @@ void pixctrl_generic_yuv422p_to_yuv420_line_stripe(uint8_t *y_src, uint8_t *u_sr
     register const int32_t dst_bpp = uv_dst_order->bpp;
 
     register int32_t col, uv_col;
-    register uint8_t *even_col_uv_dst_pos = uv_dst;
+    register uint8_t *uv_dst_pos = uv_dst;
 
     register uint32_t u_val;
     register uint32_t v_val;
 
+    /* convert 'Y' */
     for(col = 0; col < width; ++col)
     {
         y_dst[col] = y_src[col];
+    }
 
-        if ((col % 2) != 0)
+    /* convert 'CbCr' */
+    uv_dst_pos = uv_dst;
+    for(col = 0; col < width; col += 2)
+    {
+        uv_col = col / 2;
+        u_val = (uint32_t)u_src[uv_col];
+        v_val = (uint32_t)v_src[uv_col];
+
+        if ((row % 2) != 0)
         {
-            uv_col = col / 2;
-            u_val = (uint32_t)u_src[uv_col];
-            v_val = (uint32_t)v_src[uv_col];
+            u_val += (uint32_t)uv_dst_pos[d_iu];
+            v_val += (uint32_t)uv_dst_pos[d_iv];
 
-            if ((row % 2) != 0)
-            {
-                u_val = (u_val + (uint32_t)even_col_uv_dst_pos[d_iu]) >> 1;
-                v_val = (v_val + (uint32_t)even_col_uv_dst_pos[d_iv]) >> 1;
-            }
-
-            even_col_uv_dst_pos[d_iu] = (uint8_t)u_val;
-            even_col_uv_dst_pos[d_iv] = (uint8_t)v_val;
-
-            even_col_uv_dst_pos += dst_bpp;
+            u_val = u_val >> 1; /* == (u_val / 2) */
+            v_val = v_val >> 1; /* == (v_val / 2) */
         }
+
+        uv_dst_pos[d_iu] = (uint8_t)u_val;
+        uv_dst_pos[d_iv] = (uint8_t)v_val;
+        uv_dst_pos += dst_bpp;
     }
 }
 
@@ -761,20 +872,23 @@ void pixctrl_generic_yuv420p_to_yuv422_line_stripe(uint8_t *y_src, uint8_t *u_sr
 
     register int32_t col, uv_col;
     register uint8_t *dst_pos = dst;
-    register uint8_t *even_col_uv_dst_pos = dst;
 
+    /* convert 'Y' */
+    dst_pos = dst;
     for(col = 0; col < width; ++col)
     {
         dst_pos[d_iy] = y_src[col];
-
         dst_pos += dst_bpp;
-        if ((col % 2) != 0)
-        {
-            uv_col = col / 2;
-            even_col_uv_dst_pos[d_iu] = u_src[uv_col];
-            even_col_uv_dst_pos[d_iv] = v_src[uv_col];
-            even_col_uv_dst_pos = dst_pos;
-        }
+    }
+
+    /* convert 'CbCr' */
+    dst_pos = dst;
+    for(col = 0; col < width; col += 2)
+    {
+        uv_col = col / 2;
+        dst_pos[d_iu] = u_src[uv_col];
+        dst_pos[d_iv] = v_src[uv_col];
+        dst_pos += (dst_bpp * 2);
     }
 }
 
@@ -787,17 +901,24 @@ void pixctrl_generic_yuv420p_to_yuv420_line_stripe(uint8_t *y_src, uint8_t *u_sr
     register const int32_t dst_bpp = uv_dst_order->bpp;
 
     register int32_t col, uv_col;
-    register uint8_t *even_col_uv_dst_pos = uv_dst;
+    register uint8_t *uv_dst_pos = uv_dst;
 
+    /* convert 'Y' */
     for(col = 0; col < width; ++col)
     {
         y_dst[col] = y_src[col];
-        if (((col % 2) != 0) && ((row % 2) != 0))
+    }
+
+    /* convert 'CbCr' */
+    if ((row % 2) == 0)
+    {
+        uv_dst_pos = uv_dst;
+        for(col = 0; col < width; col += 2)
         {
             uv_col = col / 2;
-            even_col_uv_dst_pos[d_iu] = u_src[uv_col];
-            even_col_uv_dst_pos[d_iv] = v_src[uv_col];
-            even_col_uv_dst_pos += dst_bpp;
+            uv_dst_pos[d_iu] = u_src[uv_col];
+            uv_dst_pos[d_iv] = v_src[uv_col];
+            uv_dst_pos += dst_bpp;
         }
     }
 }
