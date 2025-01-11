@@ -932,14 +932,62 @@ void pixctrl_generic_yuv444p_to_yuv422p_line_stripe(uint8_t *y_src, uint8_t *u_s
                                                     uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
                                                     int32_t width)
 {
-    
+    register int32_t col, uv_col;
+    register uint32_t u_val;
+    register uint32_t v_val;
+
+    /* convert 'Y' */
+    for (col = 0; col < width; ++col)
+    {
+        y_dst[col] = y_src[col];
+    }
+
+    /* convert 'UV' */
+    for (col = 0; col < width; col += 2)
+    {
+        u_val = ((uint32_t)u_src[col] + (uint32_t)u_src[col + 1]) >> 1;
+        v_val = ((uint32_t)v_src[col] + (uint32_t)v_src[col + 1]) >> 1;
+
+        uv_col = col / 2;
+        u_dst[uv_col] = (uint8_t)u_val;
+        v_dst[uv_col] = (uint8_t)v_val;
+    }
 }
 
 void pixctrl_generic_yuv444p_to_yuv420p_line_stripe(uint8_t *y_src, uint8_t *u_src, uint8_t *v_src,
                                                     uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
                                                     int32_t width, int32_t row)
 {
-    
+    register int32_t col, uv_col;
+    register uint32_t u_val;
+    register uint32_t v_val;
+
+    /* convert 'Y' */
+    for (col = 0; col < width; ++col)
+    {
+        y_dst[col] = y_src[col];
+    }
+
+    /* convert 'UV' */
+    for (col = 0; col < width; col += 2)
+    {
+        u_val = ((uint32_t)u_src[col] + (uint32_t)u_src[col + 1]) >> 1;
+        v_val = ((uint32_t)v_src[col] + (uint32_t)v_src[col + 1]) >> 1;
+
+        uv_col = col / 2;
+
+        if ((row % 2) != 0)
+        {
+            u_val += (uint32_t)u_dst[uv_col];
+            v_val += (uint32_t)v_dst[uv_col];
+
+            u_val = u_val >> 1; /* == (u_val / 2) */
+            v_val = v_val >> 1; /* == (v_val / 2) */
+        }
+
+        u_dst[uv_col] = (uint8_t)u_val;
+        v_dst[uv_col] = (uint8_t)v_val;
+    }
 }
 
 /* from yuv422p */
@@ -947,27 +995,79 @@ void pixctrl_generic_yuv422p_to_yuv444p_line_stripe(uint8_t *y_src, uint8_t *u_s
                                                     uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
                                                     int32_t width)
 {
-    
+    register int32_t col, uv_col;
+
+    for (col = 0; col < width; ++col)
+    {
+        uv_col = col / 2;
+        y_dst[col] = y_src[col];
+        u_dst[col] = u_src[uv_col];
+        v_dst[col] = v_src[uv_col];
+    }
 }
 
 void pixctrl_generic_yuv422p_to_yuv420p_line_stripe(uint8_t *y_src, uint8_t *u_src, uint8_t *v_src,
                                                     uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
                                                     int32_t width, int32_t row)
 {
-    
+    register int32_t col, uv_col;
+    register int32_t uv_width = width / 2;
+    register uint32_t u_val;
+    register uint32_t v_val;
+
+    /* convert 'Y' */
+    for (col = 0; col < width; ++col)
+    {
+        y_dst[col] = y_src[col];
+    }
+
+    /* convert 'UV' */
+    for (uv_col = 0; uv_col < uv_width; ++uv_col)
+    {
+        u_val = (uint32_t)u_src[uv_col];
+        v_val = (uint32_t)v_src[uv_col];
+
+        if ((row % 2) != 0)
+        {
+            u_val += (uint32_t)u_dst[uv_col];
+            v_val += (uint32_t)v_dst[uv_col];
+
+            u_val = u_val >> 1; /* == (u_val / 2) */
+            v_val = v_val >> 1; /* == (v_val / 2) */
+        }
+
+        u_dst[uv_col] = (uint8_t)u_val;
+        v_dst[uv_col] = (uint8_t)v_val;
+    }
 }
 
 /* from yuv420p */
 void pixctrl_generic_yuv420p_to_yuv444p_line_stripe(uint8_t *y_src, uint8_t *u_src, uint8_t *v_src,
                                                     uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
-                                                    int32_t width, int32_t row)
+                                                    int32_t width)
 {
+    register int32_t col, uv_col;
 
+    for (col = 0; col < width; ++col)
+    {
+        uv_col = col / 2;
+        y_dst[col] = y_src[col];
+        u_dst[col] = u_src[uv_col];
+        v_dst[col] = v_src[uv_col];
+    }
 }
 
 void pixctrl_generic_yuv420p_to_yuv422p_line_stripe(uint8_t *y_src, uint8_t *u_src, uint8_t *v_src,
                                                     uint8_t *y_dst, uint8_t *u_dst, uint8_t *v_dst,
-                                                    int32_t width, int32_t row)
+                                                    int32_t width)
 {
-    
+    register int32_t col, uv_col;
+
+    for (col = 0; col < width; ++col)
+    {
+        uv_col = col / 2;
+        y_dst[col] = y_src[col];
+        u_dst[uv_col] = u_src[uv_col];
+        v_dst[uv_col] = v_src[uv_col];
+    }
 }

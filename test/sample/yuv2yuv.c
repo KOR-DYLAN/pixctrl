@@ -119,6 +119,15 @@ static const yuv2yuv_test_vector_t gsc_yuv2yuv_test_vector[] = {
 
     { "yuv", "yuv420p", 12,  "yuv2yuv", "nv12",      12, 1280, 720,   pixctrl_generic_yuv420p_to_nv12,     },
     { "yuv", "yuv420p", 12,  "yuv2yuv", "nv21",      12, 1280, 720,   pixctrl_generic_yuv420p_to_nv21,     },
+
+    { "yuv", "yuv444p", 24,  "yuv2yuv", "yuv422p",   16, 1280, 720,   pixctrl_generic_yuv444p_to_yuv422p,  },
+    { "yuv", "yuv444p", 24,  "yuv2yuv", "yuv420p",   12, 1280, 720,   pixctrl_generic_yuv444p_to_yuv420p,  },
+    
+    { "yuv", "yuv422p", 16,  "yuv2yuv", "yuv444p",   24, 1280, 720,   pixctrl_generic_yuv422p_to_yuv444p,  },
+    { "yuv", "yuv422p", 16,  "yuv2yuv", "yuv420p",   12, 1280, 720,   pixctrl_generic_yuv422p_to_yuv420p,  },
+
+    { "yuv", "yuv420p", 12,  "yuv2yuv", "yuv444p",   24, 1280, 720,   pixctrl_generic_yuv420p_to_yuv444p,  },
+    { "yuv", "yuv420p", 12,  "yuv2yuv", "yuv422p",   16, 1280, 720,   pixctrl_generic_yuv420p_to_yuv422p,  },
 };
 
 void test_yuv2yuv_convert(char *dirpath)
